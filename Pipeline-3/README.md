@@ -49,6 +49,9 @@ Navigate to **Pipelines > New Pipeline** and define the YAML with steps for:
 
 Once the pipeline runs:
 
+
 - A Docker image is built and pushed to your Docker Hub.
 - The image is then pulled by AKS and deployed as a running container.
 - You can access your Java Spring Boot app via the AKS service endpoint
+
+- ![Screenshot 2025-06-19 204716](https://github.com/user-attachments/assets/168fd033-dbe4-44bc-9863-37c0e5f1cd2e)
