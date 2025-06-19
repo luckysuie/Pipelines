@@ -52,3 +52,4 @@ Once triggered:
 ## ✨ Experience
 
 > Overall, my experience with this pipeline was satisfying. Seeing my webpage successfully deployed gave me a great sense of accomplishment. A simple start, but a good start!
+![Screenshot 2025-06-17 213936](https://github.com/user-attachments/assets/e304756c-d3aa-42a0-a598-cc367c88e846)
