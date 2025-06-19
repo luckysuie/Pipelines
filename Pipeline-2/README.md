@@ -66,3 +66,6 @@ Save and Create Release.
     <role rolename="manager-status"/>
     <role rolename="admin-gui"/>
     <user username="admin" password="admin123" roles="manager-gui,manager-script,manager-status,admin-gui"/>
+
+![Screenshot 2025-06-18 214051](https://github.com/user-attachments/assets/e5ac240f-744d-4d65-b94f-d5abb0ae0712)
+
