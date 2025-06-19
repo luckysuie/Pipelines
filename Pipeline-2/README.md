@@ -60,3 +60,9 @@ Save and Create Release.
 10. sh startup.sh---------------------------> you will see you tomcat server running by browsing http://publicip:8080
 11. vi ~/tomcat/webapps/manager/META-INF/context.xml-----------------------> Delete the <valve section there 
 12. vi ~/tomcat/conf/tomcat-users.xml paste the Below in users section and save and exit
+    ```bash
+    <role rolename="manager-gui"/>
+    <role rolename="manager-script"/>
+    <role rolename="manager-status"/>
+    <role rolename="admin-gui"/>
+    <user username="admin" password="admin123" roles="manager-gui,manager-script,manager-status,admin-gui"/>
