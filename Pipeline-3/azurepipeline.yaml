@@ -1,0 +1,60 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: BuildAndPush
+  displayName: 'Build and Push to Docker Hub'
+  jobs:
+    - job: DockerJob
+      displayName: 'Build and Push Docker Image'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: Docker@2
+          inputs:
+            command: 'buildAndPush'
+            containerRegistry: 'your connection'       # Your service connection name
+            repository: 'lucky1856/luckypiece'           # Full image name
+            Dockerfile: '**/Dockerfile'
+            tags: |
+              latest
+
+        - script: |
+            echo "Docker image 'lucky1856/luckypiece:latest' has been built and pushed successfully."
+          displayName: 'Confirm Image Push'
+
+- stage: DeployToAKS
+  displayName: 'Deploy to AKS without YAML'
+  dependsOn: BuildAndPush
+  jobs:
+    - job: AKSDeploy
+      displayName: 'kubectl run + expose'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'yourconnetion'
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              echo "Getting AKS credentials..."
+              az aks get-credentials --resource-group MyResourceGroup --name MyAKSCluster
+
+              echo "Deploying container to AKS..."
+              kubectl delete deployment  luckypiece --ignore-not-found
+              kubectl create deployment luckypiece \
+                --image=lucky1856/luckypiece:latest \
+
+              echo "Exposing service..."
+              kubectl delete service luckypiece-service --ignore-not-found
+              kubectl expose deployment luckypiece \
+                --type=LoadBalancer \
+                --name=onepiece-service \
+                --port=80 \
+                --target-port=8080
+
+              echo "Deployed successfully. Use 'kubectl get svc' to get the public IP."
