@@ -1,0 +1,78 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+
+- stage: BuildandPush
+  displayName: 'Docker Build and Push'
+  jobs:
+    - job: Buildandpush
+      displayName: 'Build and Push Image'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'lucky-acr'           # Docker registry type service connection
+            repository: 'luckypiece'
+            command: 'buildAndPush'
+            Dockerfile: '**/Dockerfile'
+            tags: |
+              latest
+
+- stage: Trivyscan
+  displayName: 'Scan Image with Trivy'
+  jobs:
+    - job: ScanningImage
+      displayName: 'Trivy Scan Job'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        # Login to ACR first to pull the image
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'lucky-connec1'        # Azure Resource Manager service connection
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              az acr login --name luckyregistry
+              docker pull luckyregistry.azurecr.io/luckypiece:latest
+          displayName: 'Login to ACR and Pull Image'
+
+        # Install and run Trivy
+        - script: |
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+            ./bin/trivy image --format table --output trivy-report.txt luckyregistry.azurecr.io/luckypiece:latest
+          displayName: 'Trivy Scan (Output Table)'
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: 'trivy-report.txt'
+            ArtifactName: 'Trivyscanreport'
+            publishLocation: Container
+          displayName: 'Publish Trivy report artifact'
+
+- stage: DeploytoAks
+  displayName: 'Deploy to AKS'
+  jobs:
+    - job: Deploying
+      displayName: 'Deploying to AKS'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'lucky-connec1'
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              echo "Getting AKS credentials"
+              az aks get-credentials --name lucky-aks-cluster11 --resource-group demo11 --overwrite-existing
+
+              echo "Applying Kubernetes deployment"
+              kubectl apply -f k8s/deployment.yaml
+              kubectl apply -f k8s/service.yaml
+          displayName: 'Deploy to AKS'
