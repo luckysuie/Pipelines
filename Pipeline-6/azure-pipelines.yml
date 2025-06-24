@@ -1,0 +1,48 @@
+trigger:
+ - main
+
+pool:
+ vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSource: 'spec'
+    versionSpec: '20'
+  displayName: 'Installing Node.js'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: '.'
+
+- task: CopyFiles@2
+  inputs:
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy Files to Artifact Staging Directory'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish Artifact'
+
+- task: AzureRmWebAppDeployment@5
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Pay-As-You-Go(946461f2-5424-4818-bd06-010e5f3cd8c1)'
+    appType: 'webAppLinux'
+    WebAppName: 'luckywebapp'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    RuntimeStack: 'NODE|20-lts'
+    StartupCommand: 'cd a && npm start'
+    DeploymentTypeLinux: 'oneDeploy'
+  displayName: 'Deploying to webapp'
