@@ -38,7 +38,7 @@ steps:
 - task: AzureRmWebAppDeployment@5
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'Pay-As-You-Go(946461f2-5424-4818-bd06-010e5f3cd8c1)'
+    azureSubscription: 'yoursubscription'
     appType: 'webAppLinux'
     WebAppName: 'luckywebapp'
     packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
