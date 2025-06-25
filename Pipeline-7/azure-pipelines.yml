@@ -1,0 +1,90 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: BuildAndAnalyze
+  displayName: 'Build and Analyze Stage'
+  jobs:
+  - job: BuildAndSonar
+    displayName: 'Build and SonarCloud'
+    steps:
+
+    - task: NuGetToolInstaller@1
+      inputs:
+        versionSpec: '6.14'
+      displayName: 'Install NuGet'
+
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/*.sln'
+        feedsToUse: 'select'
+      displayName: 'NuGet Restore'
+
+ 
+    - task: SonarCloudPrepare@3
+      inputs:
+        SonarQube: 'sonar-connec'  # Replace with your service connection name
+        organization: 'sonarproject456'
+        scannerMode: 'dotnet'
+        projectKey: 'sonarproject456_bootcamp5-analysis'
+        projectName: 'Bootcamp5-analysis'
+      displayName: 'Prepare SonarCloud Analysis'
+
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+      displayName: 'Build .NET Project'
+
+
+    - task: SonarCloudAnalyze@3
+      displayName: 'Run SonarCloud Analysis'
+
+  
+    - task: SonarCloudPublish@3
+      inputs:
+        pollingTimeoutSec: '300'
+      displayName: 'Publish SonarCloud Results'
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/publish'
+      displayName: 'Publish Web App'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/publish'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+      displayName: 'Publish Artifact to drop'
+
+
+- stage: DeployStage
+  displayName: 'Deploy Stage'
+  dependsOn: BuildAndAnalyze
+  jobs:
+  - job: DeployJob
+    displayName: 'Deploy to Azure Web App'
+    steps:
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifactName: 'drop'
+        targetPath: '$(Pipeline.Workspace)/drop'
+      displayName: 'Download Artifact'
+
+    - task: AzureRmWebAppDeployment@5
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'yourservece connection'
+        appType: 'webApp'
+        WebAppName: 'luckywebapp'
+        packageForLinux: '$(Pipeline.Workspace)/drop/MyWebApp.zip'
+      displayName: 'Deploy to Azure App Service'
