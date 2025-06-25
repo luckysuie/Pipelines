@@ -5,12 +5,12 @@
 2. Navigate to repos
 3. Click on Import and import this repo https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app
 4. Navigate to portal and create azure app service
-	a. select webapp+database
-	b. Enter the name
-	c. select database mongodb
-	d. Runtime Stack: Node - 20-lts
-	e. SKU and size: Basic
-5. Navigate to pipelines and start writing the pipeline for
+- select webapp+database
+- Enter the name
+- select database mongodb
+- Runtime Stack: Node - 20-lts
+- SKU and size: Basic
+- Navigate to pipelines and start writing the pipeline for
 
 ## CI Continous Integration
 - Node js 20 installation
