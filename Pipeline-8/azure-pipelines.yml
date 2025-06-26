@@ -1,0 +1,105 @@
+trigger:
+- prod
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: BuildAll
+    displayName: 'Build, Analyze, and Push'
+    jobs:
+      - job: BuildAndPush
+        displayName: 'Java & Maven & Sonar'
+        steps:
+          - task: JavaToolInstaller@1
+            inputs:
+              versionSpec: '17'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
+
+          - task: SonarCloudPrepare@3
+            inputs:
+              SonarQube: 'sonar1234'
+              organization: 'sonarproject456'
+              projectKey: 'sonarproject456_luckyanalysis'
+              projectName: 'luckyanalysis'
+              extraProperties: |
+                sonar.scanner.skipJreProvisioning=true
+            displayName: 'Running Sonar preparation'
+
+          - task: Maven@4
+            inputs:
+              mavenPomFile: 'pom.xml'
+              goals: 'clean package sonar:sonar'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.17'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              sonarQubeRunAnalysis: true
+            displayName: 'Building WAR & Running Sonar'
+
+          - task: SonarCloudPublish@3
+            inputs:
+              pollingTimeoutSec: '300'
+            displayName: 'Published Sonar report'
+
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'acr-connec'
+              repository: 'newpetclinic'
+              command: 'buildAndPush'
+              Dockerfile: '**/Dockerfile'
+              tags: 'latest'
+            displayName: 'Image Building and Pushing'
+
+  - stage: Trivyscan
+    displayName: 'Scan Image with Trivy'
+    jobs:
+    - job: ScanningImage
+      displayName: 'Trivy Scan Job'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'azure-connec'        # Azure Resource Manager service connection
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              az acr login --name demorg1
+              docker pull demorg1.azurecr.io/newpetclinic:latest
+          displayName: 'Login to ACR and Pull Image'
+
+        - script: |
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+            ./bin/trivy image --format table --output trivy-report.txt demorg1.azurecr.io/newpetclinic:latest
+          displayName: 'Trivy Scan (Output Table)'
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: 'trivy-report.txt'
+            ArtifactName: 'Trivyscanreport'
+            publishLocation: 'Container'
+          displayName: 'Publish Trivy report artifact'
+
+  - stage: DeploytoAks
+    displayName: 'Deploy to AKS'
+    jobs:
+    - job: Deploying
+      displayName: 'Deploying to AKS'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'azure-connec'
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              echo "Getting AKS credentials"
+              az aks get-credentials --name lucky-aks-cluster11 --resource-group lucky --overwrite-existing
+
+              echo "Applying Kubernetes deployment"
+              kubectl apply -f k8s/sprinboot-deployment.yaml
+              kubectl get all
+          displayName: 'Deploy to AKS'
