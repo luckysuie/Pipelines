@@ -59,3 +59,13 @@ Stage: Trivy scan with Report
 ## CD Continous Deployment 
  Stage: Deploying to Kubernetes
 - Deploy to aks
+
+## Output
+- Trivy Report
+![Screenshot 2025-06-26 105829](https://github.com/user-attachments/assets/6cc70c54-9188-448b-bf96-c48933464159)
+
+- Sonar Analysis
+![Screenshot 2025-06-26 105629](https://github.com/user-attachments/assets/ab92f299-16cc-42f6-8e02-d8f617c9d21d)
+
+- web app
+![Screenshot 2025-06-26 105514](https://github.com/user-attachments/assets/7143fc51-6854-46a4-bed2-5534268882a7)
