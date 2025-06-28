@@ -1,0 +1,83 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Build
+  jobs:
+    - job: BuildJob
+      steps:
+        - task: NuGetToolInstaller@1
+          displayName: 'Use NuGet >=6.0.0'
+          inputs:
+            versionSpec: '>=6.0.0'
+
+        - task: NuGetCommand@2
+          displayName: 'NuGet restore'
+          inputs:
+            command: 'restore'
+            restoreSolution: '**/*.sln'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'Build'
+          inputs:
+            command: 'build'
+            projects: '**/*.csproj'
+            arguments: '--configuration $(buildConfiguration)'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'Publish'
+          inputs:
+            command: 'publish'
+            publishWebProjects: true
+            arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+            zipAfterPublish: true
+
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifacts'
+          inputs:
+            pathToPublish: '$(Build.ArtifactStagingDirectory)'
+            artifactName: 'drop'
+            publishLocation: 'Container'
+
+- stage: Deploy
+  jobs:
+    - job: DeploytoAKS
+      displayName: 'Deploying to AKS'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - task: Docker@2
+          displayName: 'Build and Push Docker Image'
+          inputs:
+            containerRegistry: 'image-connec'
+            repository: 'dotnet'
+            command: 'buildAndPush'
+            Dockerfile: '**/Dockerfile'
+            tags: 'latest'
+
+        - task: AzureCLI@2
+          displayName: 'Login to ACR and Pull Image'
+          inputs:
+            azureSubscription: 'azurerm-connec'
+            scriptType: 'bash'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              az acr login --name luckyregistry
+              docker pull luckyregistry.azurecr.io/dotnet:latest
+
+        - task: AzureCLI@2
+          displayName: 'Deploy to Kubernetes'
+          inputs:
+            azureSubscription: 'azurerm-connec'
+            scriptType: 'bash'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              echo "Getting AKS Credentials"
+              az aks get-credentials --name lucky-aks-cluster11 --resource-group demo11 --overwrite-existing
+
+              echo "Applying Kubernetes Deployment"
+              kubectl apply -f k8s/deployment.yaml
+              kubectl apply -f k8s/service.yaml
