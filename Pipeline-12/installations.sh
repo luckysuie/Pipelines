@@ -23,6 +23,7 @@ sudo apt update
 wget -O docker.sh https://get.docker.com/
 sudo sh docker.sh
 sudo usermod -aG docker jenkins   #adds the user jenkins to the docker group, allowing Jenkins to run Docker commands without using sudo
+sudo systemctl restart jenkins # it will restart the jenkins
 
 
 
