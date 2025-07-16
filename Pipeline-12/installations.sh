@@ -47,7 +47,7 @@ sudo snap install kubectl --classic
 #Installations checking
 git --version
 java --version
-Jenkins --version
+jenkins --version
 docker --version
 trivy --version
 az --version
