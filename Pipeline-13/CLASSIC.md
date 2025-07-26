@@ -131,6 +131,7 @@ STAGES:
 - click on Empty job which located under the select a template
     - stage name: Release stages
     - click on 1 Job 0 task which is shown as below Screenshot
+<img width="1630" height="884" alt="image" src="https://github.com/user-attachments/assets/64f370e1-aa01-4fd8-8193-a6086a614177" />
 
 - Click on Agent Job
 	- Display Name: Agent Job
