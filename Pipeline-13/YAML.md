@@ -59,22 +59,26 @@ Password: <paste-your-PAT-here>
 
 Using YAML pipeline
 -----------------------
-Navigate to Pipelines
-Newpipeline>Azure Repos Git>select your repository>starter pipeline
-start writing the pipeline for the Build and Release
+- Navigate to Pipelines
+- Newpipeline>Azure Repos Git>select your repository>starter pipeline
+- start writing the pipeline for the Build and Release
 
 Build(continuous Integration)
 ---------
 - Install Terraform
 - Initialize Terraform
-Validate Terraform
-Plan Terraform
-publish the artifact
+- Validate Terraform
+- Plan Terraform
+- publish the artifact
 
 Release stage (Continous Deployment)
 -----------
-Install Terraform
-Download Build Artifact from Build Stage
-Re-initialize Terraform
-Apply Terrraform
+- Install Terraform
+- Download Build Artifact from Build Stage
+- Remove .terraform files
+- Re-initialize Terraform
+- Apply Terrraform
+
+## Output
+<img width="1613" height="889" alt="image" src="https://github.com/user-attachments/assets/f8c59816-dad2-469c-83d6-58631899d685" />
 
