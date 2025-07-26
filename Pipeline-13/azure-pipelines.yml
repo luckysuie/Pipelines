@@ -1,0 +1,125 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: BuildStage
+    displayName: 'Build Stage'
+    jobs:
+      - job: Build
+        displayName: 'Build'
+        steps:
+          - script: |
+              echo "Installing Terraform..."
+              sudo apt-get update -y
+              sudo apt-get install -y gnupg software-properties-common curl
+              curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+              echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+              sudo apt update
+              sudo apt install terraform -y
+              terraform -version
+            displayName: 'Install Terraform CLI'
+
+          - task: TerraformCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              command: 'init'
+              commandOptions: '-reconfigure'
+              backendType: 'azurerm'
+              backendServiceArm: 'yourserviceconnectionname'
+              backendAzureRmTenantId: 'yourtenantid'
+              backendAzureRmSubscriptionId: 'yoursubscriptionid'
+              backendAzureRmResourceGroupName: 'tfstate-rg'
+              backendAzureRmStorageAccountName: 'tfstatestorage23315'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'terraform.tfstate'
+              allowTelemetryCollection: true
+          - task: TerraformCLI@2
+            inputs:
+              command: 'validate'
+              allowTelemetryCollection: true
+            displayName: 'Validating'
+          
+          - task: TerraformCLI@2
+            inputs:
+              command: 'plan'
+              environmentServiceName: 'yourserviceconnectionname'
+              providerAzureRmSubscriptionId: 'yoursubscriptionid'
+              runAzLogin: true
+              commandOptions: '-out=$(Build.SourcesDirectory)/tfplan'
+              allowTelemetryCollection: true
+            displayName: 'planning'
+          
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.SourcesDirectory)'
+              ArtifactName: 'luckydrop'
+              publishLocation: 'Container'
+            displayName: 'Artifact'
+  
+  - stage: ReleaseStage
+    displayName: 'Release Stage'
+    dependsOn: BuildStage
+    jobs:
+        - job: release
+          displayName: 'Release'
+          pool:
+            vmImage: ubuntu-latest
+          steps:
+
+        # Step 1: Install Terraform
+          - script: |
+              echo "Installing Terraform..."
+              sudo apt-get update -y
+              sudo apt-get install -y gnupg software-properties-common curl
+              curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+              echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+              sudo apt update
+              sudo apt install terraform -y
+              terraform -version
+            displayName: 'Install Terraform CLI'
+            
+          # Step 2: Download Build Artifacts from Build Stage
+          - download: current
+            artifact: 'luckydrop'
+            displayName: 'Download Terraform Artifact'
+
+          # Step 3: Clean up .terraform directory (optional)
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: 'rm -rf .terraform'
+              workingDirectory: '$(Pipeline.Workspace)/luckydrop'
+            displayName: 'Removing .terraform folder'
+
+          # Step 4: Re-initialize Terraform (must do in new job)
+          - task: TerraformCLI@2
+            inputs:
+              command: 'init'
+              backendType: 'azurerm'
+              backendServiceArm: 'yourserviceconnectionname'
+              backendAzureRmTenantId: 'yourtenantid'
+              backendAzureRmSubscriptionId: 'yoursubscriptionid'
+              backendAzureRmResourceGroupName: 'tfstate-rg'
+              backendAzureRmStorageAccountName: 'tfstatestorage23315'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'terraform.tfstate'
+              workingDirectory: '$(Pipeline.Workspace)/luckydrop'
+              allowTelemetryCollection: true
+            displayName: 'Terraform Init'
+
+          # Step 5: Apply Terraform Plan
+          - task: TerraformCLI@2
+            inputs:
+              command: 'apply'
+              commandOptions: '-auto-approve tfplan'
+              environmentServiceName: 'yourserviceconnectionname'
+              providerAzureRmSubscriptionId: 'yoursubscriptionid'
+              runAzLogin: true
+              workingDirectory: '$(Pipeline.Workspace)/luckydrop'
+              allowTelemetryCollection: true
+            displayName: 'Applying Terraform Plan'
+
+
