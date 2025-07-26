@@ -1,0 +1,14 @@
+resource_group_name = "john"
+location = "east us"
+vnet_name = "lucky-vnet"
+vnet_address_space = ["10.0.0.0/16"]
+subnet_name = "lucky-subnet"
+subnet_address_prefix = ["10.0.0.16/28"]
+public_ip_name = "lucky-public-ip"
+nsg_name = "lucky-nsg"
+nic_name = "lucky-nic"
+vm_name = "lucky-vm"
+vm_size = "Standard_B1s"
+admin_username = "luckyadmin"
+password = "P@ssw0rd1234!"
+storage_account_name = "luckystorageacct"
