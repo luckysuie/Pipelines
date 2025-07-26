@@ -31,10 +31,10 @@ Steps:
 	1. defining variables type that are required for main and backend
 Testing in Local: 
 	1. open new terminal and run Terraform commands
-		terraform init
-		terraform validate
-		terraform plan
-		terraform apply
+		1. terraform init
+		2. terraform validate
+		3. terraform plan
+		4. terraform apply
 output: It should create the Ubuntu virtual machine in the portal
 
 pre-requisite
@@ -42,3 +42,39 @@ pre-requisite
 1. create a project named BootcampProject-3 in the Azure DevOps portal
 2. create a repo named lucky 
 3. push your local folder(project3) to your Azure DevOps repo(lucky)
+
+commands:
+---------------
+```bash
+cd project3  #if you are already here dont use this command
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://dev.azure.com/luckyashu1856/Boot%20camp%20-%203/_git/lucky
+git branch -M main
+git push -u origin main --force
+Username: luckyashu1856 #your organization Name
+Password: <paste-your-PAT-here>
+```
+
+Using YAML pipeline
+-----------------------
+Navigate to Pipelines
+Newpipeline>Azure Repos Git>select your repository>starter pipeline
+start writing the pipeline for the Build and Release
+
+Build(continuous Integration)
+---------
+- Install Terraform
+- Initialize Terraform
+Validate Terraform
+Plan Terraform
+publish the artifact
+
+Release stage (Continous Deployment)
+-----------
+Install Terraform
+Download Build Artifact from Build Stage
+Re-initialize Terraform
+Apply Terrraform
+
