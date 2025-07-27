@@ -106,7 +106,7 @@ Testing:
 
 Repository and webhook setup
 -------------
-- create a repository in the GitHub named custompolicy
+- create a repository in the GitHub named custompolicy. please refer this https://github.com/luckysuie/custompolicy 
 - Configure webhook for that repository
     - Navigate to you repository
     - Click on Settings
