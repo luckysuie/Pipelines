@@ -214,4 +214,34 @@ please refer below Diagram
 <img width="1771" height="923" alt="Screenshot 2025-07-27 110135" src="https://github.com/user-attachments/assets/1f4dab95-3cea-4299-8fc2-8e3325b3925f" />
 
 
+pipeline
+----------
+- clone your repository into local and open it in visual studio code
+- create below files
+1. main.tf --->which contains Terraform script whch creates a custom policy in Azure that denies the creation of public IP addresses at the Resource Group level. 
+2. variables.tf ---> which defiles variables
+3. outputs.tf----> which contains output valies
+4. Jenkinsfile---->code which contains for your pipeline
+
+Piepline stages
+----------
+1. git checkout
+2. sonarqube analysis
+3. publishing the report
+4. login to azure
+5. terraform init
+6. validate
+7. terraform plan
+8. terraform apply
+
+Output:
+----------
+### Pipeline Succesfully Executed
+<img width="1879" height="945" alt="Screenshot 2025-07-27 215631" src="https://github.com/user-attachments/assets/928fffcf-81af-409b-ad78-70a4d2271020" />
+
+### Sonarqube Analysis
+<img width="1885" height="968" alt="image" src="https://github.com/user-attachments/assets/cac53b7f-3024-48bc-be61-f6316dd4c088" />
+
+### Resource Group creation and failing to create IP address in it
+<img width="1843" height="711" alt="image" src="https://github.com/user-attachments/assets/395d3227-f03c-4123-a906-ad245af688c0" />
 
