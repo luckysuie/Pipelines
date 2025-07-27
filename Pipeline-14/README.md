@@ -93,6 +93,7 @@ sudo docker run -d -p 9000:9000 sonarqube
 git --version
 java --version
 jenkins --version
+terraform --version
 docker --version
 az --version
 ```
