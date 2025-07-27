@@ -101,8 +101,7 @@ sudo apt install zip
   - New credentials: kind : username and password as shown below
 <img width="1881" height="903" alt="Screenshot 2025-07-10 192828" src="https://github.com/user-attachments/assets/c5b42a73-795e-45d5-aa08-3c82625e3a2b" />
 
-   - username:
-   - your client ID
+   - username: your client ID
    - password: value
    - ID :azure-sp
 
