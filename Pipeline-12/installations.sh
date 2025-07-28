@@ -2,9 +2,37 @@
 sudo apt update
 sudo apt install git -y
 
-#Java Installation
-sudo apt update
+
+#!/bin/bash
+
+# Update system packages
+echo "Updating system packages..."
+sudo apt update -y
+
+# Install Java JDK 21
+echo "Installing OpenJDK 21..."
 sudo apt install openjdk-21-jdk -y
+
+# Download and extract Apache Maven 3.8.9
+echo "Downloading Maven 3.8.9..."
+wget https://dlcdn.apache.org/maven/maven-3/3.8.9/binaries/apache-maven-3.8.9-bin.tar.gz
+
+echo "Extracting Maven..."
+tar -xvzf apache-maven-3.8.9-bin.tar.gz
+mv apache-maven-3.8.9 maven
+
+# Set Maven environment variables (temporary for current shell)
+echo "Setting Maven environment variables..."
+export MAVEN_HOME=/home/azureuser/maven
+export PATH=$MAVEN_HOME/bin:$PATH
+
+# Append environment variables to .bashrc for persistence
+echo "Adding Maven environment variables to ~/.bashrc..."
+echo "export MAVEN_HOME=/home/azureuser/maven" >> ~/.bashrc
+echo "export PATH=\$MAVEN_HOME/bin:\$PATH" >> ~/.bashrc
+
+# Apply changes
+source ~/.bashrc
 
 
 #Jenkins Installation
@@ -28,11 +56,12 @@ sudo systemctl restart jenkins # it will restart the jenkins
 
 
 #trivy installation
-sudo apt-get install wget apt-transport-https gnupg lsb-release
+sudo apt-get install -y wget apt-transport-https gnupg lsb-release
 wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
 echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
 sudo apt-get update
-sudo apt-get install trivy -y
+sudo apt-get install -y trivy
+
 
 
 #Azure CLI Installation
@@ -49,7 +78,9 @@ sudo snap install kubectl --classic
 git --version
 java --version
 jenkins --version
+sudo systemctl status jenkins
 docker --version
 trivy --version
 az --version
 kubectl version --client
+mvn -v
