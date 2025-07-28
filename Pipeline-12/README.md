@@ -5,7 +5,8 @@ Steps:
 Repo : https://github.com/spring-projects/spring-petclinic
 1. Fork the above repo to your GitHub account
 2. Clone the forked repo to local folder and open it using Visual studio code
-3. create an with named demo11 and ubuntu VM in it with at least 2 CPU and 4GB Ram with all ports open
+3. create a resource group with named demo11 and ubuntu VM named **username : azureuser** in it with at least 2 CPU and 4GB Ram with all ports open
+- IMP Note: DONT CHANGE username
 4. Navigate to Microsoft EntraID > App registrations > New app registration > Give a name eg: lucky
 5. Navigate to lucky > top right secret > create a secret Now note down
 ```bash
@@ -15,15 +16,17 @@ value : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 6. Assign owner Role to lucky
 7. Login to VM via ssh and do below
+  - Execure one after another commands.
 ```bash
 sudo apt update
 vi installations.sh # put the below file content in it
-sh installations.sh # Run the file it will install the necessary things
+bash installations.sh # Run the file it will install the necessary things
 ```
 below is the file for installations.sh it installs below
 https://github.com/luckysuie/Pipelines/blob/main/Pipeline-12/installations.sh
 - Git
 - Java
+- Maven
 - Jenkins
 - Docker
 - Trivy
