@@ -126,9 +126,37 @@ sudo apt install zip
   - GitHub hook trigger for GITScm polling – > check this
   - click apply
 
-11. Navigate to your Azure portal
-  - create a webapp+database using Azure app servicew with name luckywebapp in the above resource group
-  - select the mongodb database while creating the webapp
+11. Create Web app with database
+- Option 1: By portal
+  - Navigate to App servieces
+  - select  webapp+database by clicking dropdown
+     - subscription : your subscription
+           - Resource group : your existing or any new
+           - Region : Canada central
+    - Web App Details
+        - Name : lucky148715
+        - Runtime Stack : NODE 20 LTS
+    - Database
+        - Engine : Cosmos DBI API for MongoDB
+        - Account name : lucky148715-server
+        - Database name : lucky148715-database
+    - Azure Cache for Redis
+        - Add Azure Cache for Redis? : No
+    - Hosting
+        - Hosting Plan : Basic - For hobby or research purposes
+  - Review + Create
+  - It will take 10-15 mins to deploy
+
+- Option 2: using Terraform
+  - create main.tf file which contains required things for the web app. FYI https://github.com/luckysuie/Pipelines/blob/main/Pipeline-11/main.tf
+    - Apply the commands
+  ```bash
+  terraform init
+  terraform validate
+  terraform plan
+  terraform --auto-approve
+   ```
+  - Note: It will take 15-20 mins to deploy
 
 12. Navigate to Visual studio code which you previously opened
   - open New Terminal in it
