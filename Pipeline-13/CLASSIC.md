@@ -9,6 +9,10 @@ Write Terraform scripts to provision Azure resources (e.g., VMs, VNet, Storage A
 	Store Terraform state files in Azure Storage.
 	Use Azure Policy to enforce compliance.
 
+## Architecture Diagram
+
+<img width="1323" height="685" alt="Screenshot 2025-07-28 152654" src="https://github.com/user-attachments/assets/5c6edc00-6cd3-447c-b28d-4a3908c57221" />
+
 Steps:
 ----------------
 1. Create a folder in local named TerrafomProject and in that create another folder named project3
