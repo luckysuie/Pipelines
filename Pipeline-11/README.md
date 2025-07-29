@@ -1,4 +1,8 @@
 # Deploy a Node.js + MongoDB application to Azure App Service using Jenkins.
+
+## Architecture Diagram
+<img width="1888" height="768" alt="image" src="https://github.com/user-attachments/assets/aaa3797c-d8da-466d-abb9-3c0909edba83" />
+
 Steps:
 --------------
 Repo: https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app 
