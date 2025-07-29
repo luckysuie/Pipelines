@@ -1,4 +1,6 @@
 # Pipeline 12 : Deploying a Java spring boot application to AKS using Jenkins via Maven, SonarQube, Docker, Trivy, ACR
+## Architecture Diagram
+<img width="1883" height="746" alt="Screenshot 2025-07-28 213251" src="https://github.com/user-attachments/assets/e7fe0617-1f1f-49e9-b2e2-7c2f3c89d3ba" />
 
 Steps: 
 -----------
