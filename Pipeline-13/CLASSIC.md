@@ -63,6 +63,14 @@ output: After pushing you will be seeing all your files in your Azure DevOps Rep
 
 Pipeline using Classic Editor
 ---------
+pre-requisite:
+1. Navigate to organization settings>General>Extensions
+2. Extensions>you will see Browse market place on Top right corner
+3. search for Azure Pipelines Terraform Tasks click on it
+4. then click on Get it free. Select your organization and Install
+
+- Direct Link : https://marketplace.visualstudio.com/items?itemName=JasonBJohnson.azure-pipelines-tasks-terraform
+
 Continuous Integration
 ---------------
 0. Enable classic editor organization settings>pipelines>settings>Disable creation of classic release pipelines and Disable creation of classic build pipelines. By on and off check whether its enabled or not
@@ -108,10 +116,10 @@ Continuous Integration
 		- AzureRM Provider Service Connection: select your service connection
 		- Azure Subscription Id: your subscription ID
 9. Repeat step4 which is called adding tasks. publish Build Artifacts>add
-		- Display Name: Building Artifact
-		- Path to publish: $(Build.SourcesDirectory)
-		- Artifact name: drop
-		- Artifact publish location: Azure Pipelines
+	- Display Name: Building Artifact
+	- Path to publish: $(Build.SourcesDirectory)
+	- Artifact name: drop
+	- Artifact publish location: Azure Pipelines
 
 Click on Save&Queue and Run it
 output: it should run successfully and produce an artifact named drop which contains all files like below
