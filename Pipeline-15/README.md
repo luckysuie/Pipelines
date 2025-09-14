@@ -62,6 +62,11 @@ subscription ID: Xxxxxxxxxxxxxxxxxxxxxxxx
   - client secret : password
   - service connection Name: luckyappconnec       #you can give any name that is upto you
 
+## App services
+1. Navigate to Portal
+2. Create three resouce groups named rg-myapp-dev, rg-myapp-stg, rg-myapp-prd
+3. Create three web apps(Azure App service) inside the resource groups named mywebapp-dev, mywebapp-stg, mywebapp-prd with Runtime stack of .net8
+4. verify whether three are running or not
 
 Pipeline:
 ------------
@@ -99,3 +104,4 @@ Now start writing pipeline for the below
 <img width="1474" height="861" alt="Screenshot 2025-09-14 085816" src="https://github.com/user-attachments/assets/46ded056-c292-4bd4-af35-25dd9befafcd" />
 <img width="1475" height="844" alt="Screenshot 2025-09-14 085756" src="https://github.com/user-attachments/assets/c87e89e6-f220-4e15-95f4-2741960382cc" />
 <img width="1797" height="823" alt="Screenshot 2025-09-14 085721" src="https://github.com/user-attachments/assets/c6d2cc9d-a057-4e43-ad28-8ce1ab341911" />
+
