@@ -1,4 +1,7 @@
 # Pipeline-15:Build a CI/CD pipeline for a .NET web application using Azure DevOps with Stages
+## Architecture Diagram
+<img width="1338" height="729" alt="image" src="https://github.com/user-attachments/assets/4d0cca85-6f70-4fe5-af9e-a6fb5b4b7b86" />
+
 Steps:
 --------------
 1. Navigate to your Azure DevOps account and create a project named Bootcamp1
@@ -104,4 +107,5 @@ Now start writing pipeline for the below
 <img width="1474" height="861" alt="Screenshot 2025-09-14 085816" src="https://github.com/user-attachments/assets/46ded056-c292-4bd4-af35-25dd9befafcd" />
 <img width="1475" height="844" alt="Screenshot 2025-09-14 085756" src="https://github.com/user-attachments/assets/c87e89e6-f220-4e15-95f4-2741960382cc" />
 <img width="1797" height="823" alt="Screenshot 2025-09-14 085721" src="https://github.com/user-attachments/assets/c6d2cc9d-a057-4e43-ad28-8ce1ab341911" />
+
 
