@@ -4,6 +4,8 @@
 1. Navigate to Azure DevOps and create a new project named pipeline-8
 2. Navigate to repos
 Click on Import and import this repo https://github.com/bkrrajmali/enahanced-petclinc-springboot
+## Architecture Diagram
+<img width="1642" height="582" alt="image" src="https://github.com/user-attachments/assets/beb6274d-436a-4a05-a256-915b9a98914d" />
 3. Open sonarcloud.io and login into your account using GitHub
 4. Create an organization named JavaOrganization and create a project named javanalysis in that organization
 5. Navigate to my account--> security-->Generate Token
