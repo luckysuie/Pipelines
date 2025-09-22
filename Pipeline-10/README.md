@@ -5,7 +5,11 @@
 1. Navigate to your Azure DevOps Account and create a new project named AKS-project
 2. Navigate to repos, Click on Import and import the below repo
 https://dev.azure.com/luckyashu1856/_git/aksssssss
-3. Create an app registration using cloud shell by below
+
+## Architecture Diagrm
+<img width="1544" height="586" alt="Screenshot 2025-09-22 144656" src="https://github.com/user-attachments/assets/2f91e12a-64e0-4356-8aae-aa45aed2a8d0" />
+
+4. Create an app registration using cloud shell by below
 ```bash
 az ad sp create-for-rbac \
   --name "lucky1234" \
