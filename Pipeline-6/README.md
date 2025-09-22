@@ -4,6 +4,8 @@
 1. Navigate to Azure DevOps and create a new project named pipeline-6
 2. Navigate to repos
 3. Click on Import and import this repo https://github.com/Azure-Samples/msdocs-nodejs-mongodb-azure-sample-app
+## Architecture Diagram
+<img width="888" height="466" alt="image" src="https://github.com/user-attachments/assets/96c236e7-77a3-4da8-8b34-9517489eb6e1" />
 4. Navigate to portal and create azure app service
 - select webapp+database
 - Enter the name
