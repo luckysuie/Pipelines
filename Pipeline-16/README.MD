@@ -7,15 +7,15 @@
 3.	Create an ubuntu vm with at least 4cpu and 16gb of RAM with all ports open. as we are running sonarqube as well.but take a look on cost as well.
 - Login into it and install below
 1.	Git
-```
+```bash
 sudo apt update
 sudo apt install git -y
 git --version
 
-```bash
+```
 
 2. Python
-```
+```bash
 sudo apt update
 sudo apt install python3 python3-venv python3-pip python3-pytest -y
 sudo apt install python-is-python3 -y
@@ -156,9 +156,9 @@ Value(which is secret) : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 ### Dockerhub credentials
-	- Navigate to dockerhub
-	- Generate a PAT token
-	- Make a note of username and PAT Token
+- Navigate to dockerhub
+- Generate a PAT token
+- Make a note of username and PAT Token
 
 ## CREDENTIALS MANAGEMENT
 - Navigate to Jenkins UI
