@@ -1,0 +1,35 @@
+pipeline {
+  agent any
+  environment {
+    IMAGE_NAME = 'lucky1856/python-onepiece-app'
+    IMAGE_FULL = "${IMAGE_NAME}:${IMAGE_TAG}"
+  }
+
+  stages {
+    stage("Login to Azure") {
+      steps {
+        echo "Logging into Azure"
+        withCredentials([
+          usernamePassword(credentialsId: 'azure-sp', usernameVariable: 'AZURE_USERNAME', passwordVariable: 'AZURE_PASSWORD'),
+          string(credentialsId: 'azure-tenant', variable: 'AZURE_TENANT')
+        ]) {
+          sh '''
+            az login --service-principal -u $AZURE_USERNAME -p $AZURE_PASSWORD --tenant $AZURE_TENANT
+          '''
+        }
+      }
+    }
+
+    stage("Deploy to azure kubernetes service") {
+      steps {
+        echo "Deploying Docker image ${IMAGE_FULL} to Azure Kubernetes Service (AKS)"
+        sh '''
+          az aks get-credentials --resource-group lucky --name lucky-aks-cluster11 --overwrite-existing
+          kubectl apply -f K8s/deployment.yaml
+          kubectl apply -f K8s/service.yaml
+          kubectl get all -o wide
+        '''
+      }
+    }
+  }
+}
