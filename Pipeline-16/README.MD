@@ -245,7 +245,7 @@ but Recommended setup is webhook
 
 Output:
  
-
+![Alt text]("C:\Users\lucky\OneDrive\Pictures\Screenshots\Screenshot 2025-11-09 021316.png")
 
 CD PIPELINE:
 Navigate to Azure portal
