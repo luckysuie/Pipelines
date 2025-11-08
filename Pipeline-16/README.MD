@@ -11,18 +11,22 @@
 sudo apt update
 sudo apt install git -y
 git --version
+
 ```bash
 
 2. Python
 ```
+
 sudo apt update
 sudo apt install python3 python3-venv python3-pip python3-pytest -y
 sudo apt install python-is-python3 -y
 python --version
+
 ```bash
 
 3.	Jenkins
 ```bash
+
 sudo apt update
 sudo apt install openjdk-21-jdk -y # Jenkins needs Java to run
 sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
@@ -33,10 +37,12 @@ echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc]" \
 sudo apt update
 sudo apt install jenkins -y
 sudo systemctl start jenkins
+
 ```
 
 4.Docker installation and configuration and adding Jenkins user to Docker group(Execute one after another below commands)
 ```bash
+
 sudo apt update -y
 wget -O docker.sh https://get.docker.com/
 sudo sh docker.sh
@@ -46,16 +52,20 @@ sudo systemctl restart docker
 sudo systemctl restart jenkins
 newgrp docker
 docker –version
+
 ```
 
 5.	Sonarqube as container
 ```bash
+
 docker pull sonarqube 
 docker run -d -p 9000:9000 sonarqube
+
 ```
 
 6.	Trivy
 ```bash
+
 sudo apt update
 sudo apt-get install wget apt-transport-https gnupg lsb-release
 wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
@@ -63,25 +73,32 @@ echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main |
 sudo apt-get update
 sudo apt-get install trivy -y
 trivy --version
+
 ```
 
 7.	Azure CLI
 ```bash
+
 sudo apt update
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 az –version
+
 ```
 
 8.	Login to your acccount
 ```bash
+
 az login –use-device-code
+
 ```
 
 9.	Install Kubectl
 ```bash
+
 sudo apt update
 sudo snap install --classic kubectl
 kubectl version --client
+
 ```
 
 -Verifications: 
