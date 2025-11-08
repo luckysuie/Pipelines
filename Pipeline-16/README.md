@@ -232,7 +232,7 @@ but Recommended setup is webhook
   - GitHub hook trigger for GITScm polling – > check this
 -click apply
 
-## Navigate to visual studio code which you opened already create a Jenkins file for CI if not there and start writing the pipeline for the Below stages for Continous pipeline
+#### Navigate to visual studio code which you opened already create a Jenkins file for CI if not there and start writing the pipeline for the Below stages for Continous pipeline
 ### CI PIPELINE
 - Git Checkout
 - Python Build
@@ -272,14 +272,15 @@ az aks create   --resource-group lucky   --name lucky-aks-cluster11   --node-cou
 
 - After succesfull deploy check whether he application is running or not by
 - Navigate to cloud shell where you created aks cluster then
-- ```bash
+```bash
 	az aks get-credentials --resource-group lucky --name lucky-aks-cluster11 --overwrite-existing
-  ```
+```
 
 ```bash
 	kubectl get all
 ```
--Then you will get like below
+- Then you will get like below
+
 ```bash 
 
 NAME                      TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
@@ -287,6 +288,17 @@ service/kubernetes        ClusterIP      10.0.0.1       <none>          443/TCP 
 service/luckywebapp-svc   LoadBalancer   10.0.239.136   134.33.229.56   80:31887/TCP   9m59s
 ```
 
-- copy the external ip and paste in broswer
+- Copy the external ip and paste in broswer. Below is the final output of application. 
 
- 
+ <img width="1904" height="957" alt="Screenshot 2025-11-07 223427" src="https://github.com/user-attachments/assets/9b5a2e43-321f-48d1-8df5-cd6f38353ad1" />
+
+
+ ### Sonar Report
+
+<img width="1883" height="966" alt="Screenshot 2025-11-07 223647" src="https://github.com/user-attachments/assets/6a4cef0b-522d-49f9-83c9-61a165151fbd" />
+
+
+### Trivy Report
+
+<img width="1368" height="863" alt="Screenshot 2025-11-07 224447" src="https://github.com/user-attachments/assets/0ac9f25b-9d58-4fd8-9ae0-b423a1a86335" />
+
