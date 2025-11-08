@@ -12,6 +12,7 @@ sudo apt update
 sudo apt install git -y
 git --version
 ```bash
+
 2.	Python
 ```
 sudo apt update
@@ -19,8 +20,9 @@ sudo apt install python3 python3-venv python3-pip python3-pytest -y
 sudo apt install python-is-python3 -y
 python --version
 ```bash
+
 3.	Jenkins
-```
+```bash
 sudo apt update
 sudo apt install openjdk-21-jdk -y # Jenkins needs Java to run
 sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
@@ -32,6 +34,7 @@ sudo apt update
 sudo apt install jenkins -y
 sudo systemctl start jenkins
 ```
+
 4.Docker installation and configuration and adding Jenkins user to Docker group(Execute one after another below commands)
 ```bash
 sudo apt update -y
@@ -44,11 +47,13 @@ sudo systemctl restart jenkins
 newgrp docker
 docker –version
 ```
+
 5.	Sonarqube as container
 ```bash
 docker pull sonarqube 
 docker run -d -p 9000:9000 sonarqube
 ```
+
 6.	Trivy
 ```bash
 sudo apt update
@@ -59,22 +64,26 @@ sudo apt-get update
 sudo apt-get install trivy -y
 trivy --version
 ```
+
 7.	Azure CLI
 ```bash
 sudo apt update
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 az –version
 ```
+
 8.	Login to your acccount
 ```bash
 az login –use-device-code
 ```
+
 9.	Install Kubectl
 ```bash
 sudo apt update
 sudo snap install --classic kubectl
 kubectl version --client
 ```
+
 -Verifications: 
   - Browswe the publicip with 8080  you will see jenkins page
   - Browse the public ip with 9000 you will see soarqube login page
@@ -92,48 +101,52 @@ then login to jenkins and sonarqube
   - Navigate to my account>security>generate a toekn
   - Save it in notepad or other
 
-Secure way of integrating Azure cloud to Jenkins without subscriptionID
-Navigate to Microsoft EntraID > App registrations > New app registration > Give a name eg: lucky
-Navigate to lucky > top right secret > create a secret Now note down
+### Secure way of integrating Azure cloud to Jenkins without subscriptionID
+- Navigate to Microsoft EntraID > App registrations > New app registration > Give a name eg: lucky
+- Navigate to lucky > top right secret > create a secret Now note down
 Assign Owner or contributor to lucky
-4.	Assigning Role to lucky
-•	Navigate to the Subscriptions in portal
-•	Open the IAM (Access Control) Blade
-o	In the subscription panel, select "Access control (IAM)"
-•	Click on the "Role assignments" tab
-•	Add Role Assignment
-o	Click the "+ Add" button
-o	Select "Add role assignment" from the dropdown
-•	Configure Role Assignment
-o	Role: In the Role tab, search and select "Owner"
-o	Click "Next" Assign Access to User
-o	In the Members tab:
-o	Scope: Leave as default (User, group, or service principal)
-o	Click "+ Select members"
-o	Type lucky in the search bar
-o	Select the matching user account
-o	Click "Select" • Click "Next"
-•	Set Conditions
-o	In the Conditions (preview) tab:
-o	Choose the recommended condition shown (typically for least privilege or conditional access context)
-o	Review what the condition does
-o	Click "Next"
-•	Review and Assign
-o	Review all your selections
-o	Click "Review + assign"
-Make a note of below
+4. Assigning Role to lucky
+- Navigate to the Subscriptions in portal
+- Open the IAM (Access Control) Blade
+  - In the subscription panel, select "Access control (IAM)"
+- Click on the "Role assignments" tab
+- Add Role Assignment
+  - Click the "+ Add" button
+  - Select "Add role assignment" from the dropdown
+- Configure Role Assignment
+  - Role: In the Role tab, search and select "Owner"
+  - Click "Next"
+Assign Access to User
+  - In the Members tab:
+  - Scope: Leave as default (User, group, or service principal)
+  - Click "+ Select members"
+  - Type lucky in the search bar
+  - Select the matching user account
+  - Click "Select" • Click "Next"
+- Set Conditions
+  - In the Conditions (preview) tab:
+  - Choose the recommended condition shown (typically for least privilege or conditional access context)
+  - Review what the condition does
+  - Click "Next"
+- Review and Assign
+  - Review all your selections
+  - Click "Review + assign"
+
+- Make a note of below
+```bash
 Application (client) ID: XXXXXXXXXXXXXXXXXXXXXXXXXX
 Directory (tenant) ID :XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 Value(which is secret) : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
 
-Dockerhub credentials
-	Navigate to dockerhub
-	Generate a PAT token
-	Make a note of username and PAT Token
+### Dockerhub credentials
+	- Navigate to dockerhub
+	- Generate a PAT token
+	- Make a note of username and PAT Token
 
-CREDENTIALS MANAGEMENT
-Navigate to Jenkins UI
-DockerHub Credentials setup
+## CREDENTIALS MANAGEMENT
+- Navigate to Jenkins UI
+- DockerHub Credentials setup
 Manage Jenkins>credentials>system>+Add credentials
 •	New credentials: kind : username and password 
 o	username: yourdockerhubusername
