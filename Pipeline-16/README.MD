@@ -15,13 +15,14 @@ git --version
 ```
 
 2. Python
+
 ```bash
 sudo apt update
 sudo apt install python3 python3-venv python3-pip python3-pytest -y
 sudo apt install python-is-python3 -y
 python --version
 
-```bash
+```
 
 3.	Jenkins
 ```bash
@@ -163,11 +164,11 @@ Value(which is secret) : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ## CREDENTIALS MANAGEMENT
 - Navigate to Jenkins UI
 ### DockerHub Credentials setup
-	- Manage Jenkins>credentials>system>+Add credentials
-	  - New credentials: kind : username and password 
-		- username: yourdockerhubusername
-		- password: dockerhubPATtoken 
-		- ID : docker-hub-credentials #this ID important we will use this pipeline
+- Manage Jenkins>credentials>system>+Add credentials
+	- New credentials: kind : username and password 
+	- username: yourdockerhubusername
+	- password: dockerhubPATtoken 
+	- ID : docker-hub-credentials #this ID important we will use this pipeline
 ### Azure cloud Credentials setup
 - Manage Jenkins>credentials>system>+Add credentials
 	- New credentials: kind : username and password 
@@ -233,15 +234,14 @@ but Recommended setup is webhook
 
 ## Navigate to visual studio code which you opened already create a Jenkins file for CI if not there and start writing the pipeline for the Below stages for Continous pipeline
 ### CI PIPELINE
-
-	- Git Checkout
-	- Python Build
-	- Python Test
-	- sonarQube scan
-	- publish sonarQube quality gate
-	- Docker build and push
-	- Trivy security scan and have that report as artifact
-- Recommended: Push stage by stage by stage so that it wll be error free and Good
+- Git Checkout
+- Python Build
+- Python Test
+- sonarQube scan
+- publish sonarQube quality gate
+- Docker build and push
+- Trivy security scan and have that report as artifact
+	- Recommended: Push stage by stage by stage so that it wll be error free and Good
 
 Output:
  
