@@ -164,10 +164,10 @@ Value(which is secret) : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 - Navigate to Jenkins UI
 - DockerHub Credentials setup
 Manage Jenkins>credentials>system>+Add credentials
-•	New credentials: kind : username and password 
-o	username: yourdockerhubusername
-o	password: dockerhubPATtoken 
-o	ID : docker-hub-credentials #this ID important we will use this pipeline
+	- New credentials: kind : username and password 
+		- username: yourdockerhubusername
+		- password: dockerhubPATtoken 
+		- ID : docker-hub-credentials #this ID important we will use this pipeline
 Azure cloud Credentials setup
 •	New credentials: kind : username and password 
 •	username: your client ID
