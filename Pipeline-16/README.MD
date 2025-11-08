@@ -13,7 +13,7 @@ sudo apt install git -y
 git --version
 ```bash
 
-2.	Python
+2. Python
 ```
 sudo apt update
 sudo apt install python3 python3-venv python3-pip python3-pytest -y
