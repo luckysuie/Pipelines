@@ -162,85 +162,86 @@ Value(which is secret) : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ## CREDENTIALS MANAGEMENT
 - Navigate to Jenkins UI
-- DockerHub Credentials setup
-Manage Jenkins>credentials>system>+Add credentials
-	- New credentials: kind : username and password 
+### DockerHub Credentials setup
+	- Manage Jenkins>credentials>system>+Add credentials
+	  - New credentials: kind : username and password 
 		- username: yourdockerhubusername
 		- password: dockerhubPATtoken 
 		- ID : docker-hub-credentials #this ID important we will use this pipeline
-Azure cloud Credentials setup
-•	New credentials: kind : username and password 
-•	username: your client ID
-•	password: value 
-•	ID :azure-sp #this ID important we will use this pipeline
+### Azure cloud Credentials setup
+- Manage Jenkins>credentials>system>+Add credentials
+	- New credentials: kind : username and password 
+	- username: your client ID
+	- password: value 
+	- ID :azure-sp #this ID important we will use this pipeline
 
-•	New credentials: kind : secret text 
-o	secret : Directory(tenant ID)
-o	ID: azure-tenant #this ID important we will use this pipeline	
-Sonarqube Credentials setup
-•	New credentials: kind : secret text 
-o	secret : yoursonarqubetoken
-o	ID: sonarqube-token #this ID important we will use this pipeline	
+- Manage Jenkins>credentials>system>+Add credentials
+	- New credentials: kind : secret text 
+	- secret : Directory(tenant ID)
+	- ID: azure-tenant #this ID important we will use this pipeline	
+
+### Sonarqube Credentials setup
+- Manage Jenkins>credentials>system>+Add credentials
+	- New credentials: kind : secret text 
+	- secret : yoursonarqubetoken
+	- ID: sonarqube-token #this ID important we will use this pipeline	
 
  
+## Register your SonarQube server in Jenkins
+- Manage Jenkins → System → SonarQube servers → Add SonarQube
+	- Name: sonarqube-local
+	- Server URL: http://172.172.149.37:9000    #in place of ip you should place yours
+	- Server authentication token: choose the credential sonarqube-token
+	- Click on apply
 
-Register your SonarQube server in Jenkins
-Manage Jenkins → System → SonarQube servers → Add SonarQube
-•	Name: sona	rqube-local
-•	Server URL: http://172.172.149.37:9000    #in place of ip you should place yours
-•	Server authentication token: choose the credential sonarqube-token
-•	Click on apply
-
- Configure SonarQube Scanner in Jenkins (Tool Installation Setup)
-Go to Manage Jenkins → Global Tool Configuration again.
-•	Scroll down to SonarQube Scanner installations.
-•	Name: sonar-scanner  #this is important we will use this pipeline
-•	Version: SonarQube Scanner 7.3.0.5189
-•	Install automatically: Enabled
-•	Click apply
-
-
-
+## Configure SonarQube Scanner in Jenkins (Tool Installation Setup)
+- Go to Manage Jenkins → Global Tool Configuration again.
+	- Scroll down to SonarQube Scanner installations.
+	- Name: sonar-scanner  #this is important we will use this pipeline
+	- Version: SonarQube Scanner 7.3.0.5189
+	- Install automatically: Enabled
+	- Click apply
 
 
 If you want you can configure webook otherwise write pipeline in local and paste in jenkins
-But Recommended setup is webhook
-Repository and webhook setup
-•	Configure webhook for that repository
-o	Navigate to you repository
-o	Click on Settings
-o	On the left pane select webhooks
-•	Add webhook
-o	Payload URL: http://yourvmip:8080/github-webhook/
-o	Ssl certificate: Disable
-o	Check push the event
-o	Click on add webhook
+but Recommended setup is webhook
+## Repository and webhook setup
+- Configure webhook for that repository
+    - Navigate to you repository
+    - Click on Settings
+    - On the left pane select webhooks
+- Add webhook
+  -  Payload URL: http://yourvmip:8080/github-webhook/
+  -  Ssl certificate: Disable
+  -  Check push the event
+  -  Click on add webhook
 
-Pipeline and its Trigger setup
-•	Navigate to Jenkins UI
-•	New item
-•	Select pipeline
-•	Click ok
-•	Navigate to your item click on configure
-•	Navigate to pipeline section
-•	Select pipeline script definition as pipeline script as scm
-•	Give your github reo url
-•	Enter the correct branch 
-•	Click on apply
-•	Triggers Section
-•	GitHub hook trigger for GITScm polling – > check this
-•	click apply
-18.	Navigate to visual studio code which you opened already create a Jenkins file for CI if not there and start writing the pipeline for the Below stages for Continous pipeline
-CI PIPELINE
+## Pipeline and its Trigger setup
+- Navigate to Jenkins UI
+- New item
+- Select pipeline
+- Click ok
+- Navigate to your item click on configure
+- Navigate to pipeline section
+  - Select pipeline script definition as pipeline script as scm
+  - Give your GitHub reo url
+  - Enter the correct branch #means main or master check your githubrepo and add carefully
+  - Click on apply
+- Triggers Section
+  - GitHub hook trigger for GITScm polling – > check this
+-click apply
 
-•	Git Checkout
-•	Python Build
-•	Python Test
-•	sonarQube scan
-•	publish sonarQube quality gate
-•	Docker build and push
-•	Trivy security scan and have that report as artifact
-Recommended: Push stage by stage by stage so that it wll be error free and Good
+## Navigate to visual studio code which you opened already create a Jenkins file for CI if not there and start writing the pipeline for the Below stages for Continous pipeline
+### CI PIPELINE
+
+	- Git Checkout
+	- Python Build
+	- Python Test
+	- sonarQube scan
+	- publish sonarQube quality gate
+	- Docker build and push
+	- Trivy security scan and have that report as artifact
+- Recommended: Push stage by stage by stage so that it wll be error free and Good
 
 Output:
  
