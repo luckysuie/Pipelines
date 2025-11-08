@@ -16,7 +16,6 @@ git --version
 
 2. Python
 ```
-
 sudo apt update
 sudo apt install python3 python3-venv python3-pip python3-pytest -y
 sudo apt install python-is-python3 -y
