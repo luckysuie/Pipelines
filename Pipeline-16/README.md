@@ -243,35 +243,50 @@ but Recommended setup is webhook
 - Trivy security scan and have that report as artifact
 	- Recommended: Push stage by stage by stage so that it wll be error free and Good
 
-Output:
+- Output:
  
-![Alt text]("C:\Users\lucky\OneDrive\Pictures\Screenshots\Screenshot 2025-11-09 021316.png")
+<img width="1914" height="854" alt="Screenshot 2025-11-09 021316" src="https://github.com/user-attachments/assets/4aa86dab-cea5-4d14-9d46-413faec0baa0" />
 
-CD PIPELINE:
-Navigate to Azure portal
-Create  a resource group named lucky or any other
-Create an aks cluster using below in your Azure cloud shell using below command
+## CD PIPELINE:
+- Navigate to Azure portal
+- Create  a resource group named lucky or any other
+- Create an aks cluster using below in your Azure cloud shell using below command
+```bash
 az aks create   --resource-group lucky   --name lucky-aks-cluster11   --node-count 1   --generate-ssh-keys
+```
 
-Navigate to Jenkins UI
-Create another new item
-Name it python-cd
-Click ok
-Now if you can use webhook or write in local and paste it jenkins
-Stages:
-1.	Log into Azure
-2.	Deploy to Kubernetes
+- Navigate to Jenkins UI
+- Create another new item
+- Name it python-cd
+- select pipeline
+- Click ok
+	- Now if you can use webhook or write in local and paste it jenkins
 
- 
+- Stages:
+  - Log into Azure
+  - Deploy to Kubernetes
 
-After succesfull deploy check whether he application is running or not by
-Navigate to cloud shell where you created aks cluster then
+- Output
+
+<img width="1591" height="820" alt="Screenshot 2025-11-07 223055" src="https://github.com/user-attachments/assets/23a90218-5ac9-4ef2-ab76-5de01d536c9f" />
+
+- After succesfull deploy check whether he application is running or not by
+- Navigate to cloud shell where you created aks cluster then
+- ```bash
 	az aks get-credentials --resource-group lucky --name lucky-aks-cluster11 --overwrite-existing
+  ```
+
+```bash
 	kubectl get all
-then you will get like below
+```
+-Then you will get like below
+```bash 
+
 NAME                      TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
 service/kubernetes        ClusterIP      10.0.0.1       <none>          443/TCP        17m
 service/luckywebapp-svc   LoadBalancer   10.0.239.136   134.33.229.56   80:31887/TCP   9m59s
-copy the external ip and paste in broswer
+```
+
+- copy the external ip and paste in broswer
 
  
