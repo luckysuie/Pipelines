@@ -187,6 +187,10 @@ Value(which is secret) : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	- secret : yoursonarqubetoken
 	- ID: sonarqube-token #this ID important we will use this pipeline	
 
+### Credentials setup Output
+
+<img width="1659" height="541" alt="Screenshot 2025-11-07 195434" src="https://github.com/user-attachments/assets/a72927f6-bdf3-4200-9f00-d92cd997d50a" />
+
  
 ## Register your SonarQube server in Jenkins
 - Manage Jenkins → System → SonarQube servers → Add SonarQube
