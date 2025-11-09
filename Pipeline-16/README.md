@@ -2,6 +2,10 @@
 
 - Python repo: https://github.com/luckysuie/python-onepiece-app 
 - Important Note: If you are doing with another repo or programming language repo make sure you have     Dockerfile and kubernetes yaml files without fail
+
+### ARCHITECTURE DIAGRAM
+<img width="1749" height="636" alt="image" src="https://github.com/user-attachments/assets/eb2917be-c099-4103-a8f4-76fafaf61070" />
+
 1.	Fork the above repo to your GitHub account
 2.	Clone the forked repo to local folder and open it using Visual studio code
 3.	Create an ubuntu vm with at least 4cpu and 16gb of RAM with all ports open. as we are running sonarqube as well.but take a look on cost as well.
