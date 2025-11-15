@@ -1,0 +1,98 @@
+pipeline {
+    agent any
+    environment {
+        RESOURCE_GROUP = 'lucky'
+        VM_NAME = 'Testuser'
+    }
+
+    stages {
+
+        stage('Login to Azure') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'azure-sp', usernameVariable: 'AZURE_APP_ID', passwordVariable: 'AZURE_PASSWORD'),
+                       string(credentialsId: 'azure-tenant', variable: 'AZURE_TENANT')
+                ]) {
+                    sh "az login --service-principal -u $AZURE_APP_ID -p $AZURE_PASSWORD --tenant $AZURE_TENANT"
+                }
+            }
+        }
+
+        stage('Check VM State') {
+            steps {
+                script {
+                    env.VM_STATUS = sh(
+                        script: "az vm get-instance-view --resource-group ${RESOURCE_GROUP} --name ${VM_NAME} --query instanceView.statuses[1].code --output tsv",
+                        returnStdout: true
+                    ).trim()
+
+                    echo "Current VM Status: ${env.VM_STATUS}"
+                }
+            }
+        }
+
+        stage('Start VM if Stopped') {
+            when {
+                expression {
+                    return env.VM_STATUS == 'PowerState/deallocated' || env.VM_STATUS == 'PowerState/stopped'
+                }
+            }
+            steps {
+                echo "VM is stopped. Starting VM..."
+                sh "az vm start --resource-group ${RESOURCE_GROUP} --name ${VM_NAME}"
+            }
+        }
+
+        stage('Ask Approval if Running') {
+            when {
+                expression {
+                    return env.VM_STATUS == 'PowerState/running'
+                }
+            }
+            steps {
+                script {
+                    env.USER_ACTION = input(
+                        message: "VM '${VM_NAME}' is running. What do you want to do?",
+                        parameters: [
+                            choice(
+                                name: 'ACTION',
+                                choices: ['Do Nothing', 'Stop VM', 'Restart VM'],
+                                description: 'Select your action'
+                            )
+                        ]
+                    )
+                    echo "You selected: ${env.USER_ACTION}"
+                }
+            }
+        }
+
+        stage('Stop VM') {
+            when {
+                expression { return env.USER_ACTION == 'Stop VM' }
+            }
+            steps {
+                echo "Stopping VM..."
+                sh "az vm stop --resource-group ${RESOURCE_GROUP} --name ${VM_NAME}"
+            }
+        }
+
+        stage('Restart VM') {
+            when {
+                expression { return env.USER_ACTION == 'Restart VM' }
+            }
+            steps {
+                echo "Restarting VM..."
+                sh "az vm restart --resource-group ${RESOURCE_GROUP} --name ${VM_NAME}"
+            }
+        }
+
+        stage('No Action') {
+            when {
+                expression { return env.USER_ACTION == 'Do Nothing' }
+            }
+            steps {
+                echo "No action performed. VM remains running."
+            }
+        }
+    }
+}
