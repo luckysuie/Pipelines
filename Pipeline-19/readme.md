@@ -147,7 +147,6 @@ ________________________________________
 #### INSTALL BELOW PLUGINS IN JENKINS
 - Maven
 - Pipeline stage viewer
-- Blue ocean(optional) It gives better UI for jenkins
 - Sonarqube scanner
 #### CONFIGURATIONS IN JENKINS
 - Configure Maven in Jenkins (Tool Installation Setup)
