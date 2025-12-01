@@ -13,7 +13,7 @@
 	   - application.yaml
 - My repo contains Azure SQL Database: https://github.com/luckysuie/Java-springboot 
 ### Phase 1: Basic Infra and Installations
-1.	Create a ubuntu VM with 4vCpus and 16GiB memoy with all ports open
+1.	Create a resource group named lucky in canada central location and inside of it create a ubuntu VM with 4vCpus and 16GiB memoy with all ports open
 2.	Login to VM using SSH and do the below
    - Install Git
    - Jenkins installation and verification
@@ -58,19 +58,15 @@ az login --use-device-code
   - password: admin
 ### Phase 3: Infra required for Pipelines
 - Perform below either in the VM and for database use portal
-1.	Create an resource group
-```bash
-az group create --name lucky --location canadacentral
-```
-3.	Create an Azure container Registry
+1.	Create an Azure container Registry
 ```
 az acr create --resource-group lucky --name luckyregistry --sku Basic
 ```
-5.	Create an AKS cluster
+2.	Create an AKS cluster
 ```bash
 az aks create   --resource-group demo11   --name lucky-aks-cluster11   --node-count 1   --generate-ssh-keys
 ```
-7.	Create an Azure sql database
+3.	Create an Azure sql database
 - Steps
 1. Open SQL Database creation
     - Sign in to Azure Portal.
