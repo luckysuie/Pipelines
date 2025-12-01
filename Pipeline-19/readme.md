@@ -64,7 +64,7 @@ az acr create --resource-group lucky --name luckyregistry --sku Basic
 ```
 2.	Create an AKS cluster
 ```bash
-az aks create   --resource-group demo11   --name lucky-aks-cluster11   --node-count 1   --generate-ssh-keys
+az aks create   --resource-group lucky   --name lucky-aks-cluster11   --node-count 1   --generate-ssh-keys
 ```
 3.	Create an Azure sql database
 - Steps
