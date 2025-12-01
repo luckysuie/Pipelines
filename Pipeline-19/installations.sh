@@ -24,6 +24,11 @@ sudo usermod -aG docker jenkins
 sudo usermod -aG docker "$USER"
 sudo systemctl enable --now docker
 
+sudo groupadd -f docker
+sudo usermod -aG docker "$USER"
+sudo systemctl restart docker
+newgrp docker
+
 # SonarQube (Docker)
 sudo docker pull sonarqube
 sudo docker run -d --name sonarqube -p 9000:9000 sonarqube
@@ -76,4 +81,7 @@ echo "  Jenkins    -> http://<VM-IP>:8080"
 echo "  SonarQube  -> http://<VM-IP>:9000"
 echo "  Prometheus -> http://<VM-IP>:9090"
 echo "  Grafana    -> http://<VM-IP>:3000"
+echo " Docker verify without sudo"
+docker --version
+docker ps
 
