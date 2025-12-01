@@ -190,6 +190,7 @@ ________________________________________
 
 - Create a namespace in Kubernetes
 ```bash
+az aks get-credentials --resource-group lucky --name lucky-aks-cluster11
 kubectl create namespace argocd
 kubectl get namespaces   #you will see argocd namespace created
 ```
