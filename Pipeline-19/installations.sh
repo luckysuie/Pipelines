@@ -40,6 +40,11 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 # kubectl
 sudo snap install --classic kubectl
 
+# Install argocd
+sudo curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo chmod +x /usr/local/bin/argocd
+argocd version
+
 # Prometheus (binary under /opt/prometheus)
 sudo apt update -y
 cd /opt
