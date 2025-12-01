@@ -199,6 +199,17 @@ ________________________________________
   	- New credentials: kind : secret text 
   	- secret : yoursonarqubetoken 
   	- ID: sonarqube-token #this ID important we will use this pipeline
+- Configure the SonarQube server in Jenkins
+	- Go to Manage Jenkins → Configure System
+	- Scroll down to SonarQube servers
+		- Click Add SonarQube
+		- Fill it like this:
+			- Name: sonar-server ← must match what you use in the pipeline
+			- Server URL: http://4.206.81.78:9000/
+		- Server authentication token:
+			- Add credentials (kind: Secret text) with your SonarQube token
+			- Select that credential here
+	- save
 
 ### Phase 5: Argo CD setup in AKS cluster
   - ArgoCD: Argo CD is 100% Kubernetes-native. It is built specifically to deploy and manage applications inside Kubernetes clusters.
