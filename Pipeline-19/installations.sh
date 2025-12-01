@@ -27,6 +27,7 @@ sudo systemctl enable --now docker
 sudo groupadd -f docker
 sudo usermod -aG docker "$USER"
 sudo systemctl restart docker
+sudo systemctl restart jenkins
 newgrp docker
 
 # SonarQube (Docker)
