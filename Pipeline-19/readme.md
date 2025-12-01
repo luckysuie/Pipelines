@@ -65,8 +65,24 @@ az acr create --resource-group lucky --name luckyregistry --sku Basic
 2.	Create an AKS cluster
 ```bash
 az aks create   --resource-group lucky   --name lucky-aks-cluster11   --node-count 1   --generate-ssh-keys
+az aks get-credentials --resource-group lucky --name lucky-aks-cluster11
 ```
-3.	Create an Azure sql database
+3. Enabling Authentication for ACR
+	- Navigate to portal then resource group(lucky)
+ 	- search for your acr(luckyregistry) and open it
+  	- In the left side search bar --> access keys
+  		- Enable Admin user
+    - Finally copy Login server, username and password
+5. create an ACR secret by using below. The purpose of this is pulls the image from acr to deployment
+```bash
+kubectl create secret docker-registry acr-secret \
+  --docker-server=luckyregistry.azurecr.io \
+  --docker-username=luckyregistry \
+  --docker-password=youregistrypassword \
+  --docker-email=example@gmail.com 
+```
+  
+6.	Create an Azure sql database
 - Steps
 1. Open SQL Database creation
     - Sign in to Azure Portal.
