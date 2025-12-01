@@ -55,7 +55,7 @@ az login --use-device-code
   - username: admin
   - password: admin
 ### Phase 3: Infra required for Pipelines
-	- Perform below either in the VM and for database use portal
+- Perform below either in the VM and for database use portal
 1.	Create an resource group
 ```bash
 az group create --name lucky --location canadacentral
@@ -73,27 +73,22 @@ az aks create   --resource-group demo11   --name lucky-aks-cluster11   --node-co
     - Sign in to Azure Portal.
     - Search for SQL databases → click Create → SQL database.
 - You are now on the Basics tab.
-________________________________________
 2. Apply free offer (if visible)
   - At the top of the Basics tab, if you see
 - “Want to try Azure SQL Database for free?”
 - click Apply offer.
 - If you do not see it or do not want it, continue without changing anything here.
-________________________________________
 3. Set backup storage redundancy to LRS(IF you don’t find this No Problem)
    - Still on the Basics tab, find Backup storage redundancy.
    - Select Locally-redundant backup storage.
-________________________________________
 4. Project details
    - Subscription: choose your subscription.
    - Resource group: select lucky.
-________________________________________
 5. Database details
    - Database name: onepiecedb.
    - Want to use SQL elastic pool?: select No.
    - Workload environment: select Production.
    - Keep the default compute + storage (or adjust if you need).
-________________________________________
 6. Create the SQL server
 - Under Server, click Create new.
 - In the dialog:
@@ -104,24 +99,20 @@ ________________________________________
   - Password: YourSecurePassword@123
   - Confirm password: same value
 - Click OK to create and attach this server.
-________________________________________
 7. Networking
    - Click Next: Networking.
    - Connectivity method: choose Public endpoint.
    - Turn on Allow Azure services and resources to access this server.
    - add your client IP if you want to connect from your laptop.(means your ip address)
 - Click Next: Security.
-________________________________________
 8. Security
   - Leave Defender, ledger, and other options at their defaults unless you specifically need them.
   - Click Next: Additional settings.
-________________________________________
 9. Additional settings
    - Data source: select None (empty database).
    - Collation: keep the default or choose SQL_Latin1_General_CP1_CI_AS.
 - Leave the rest as default.
 - Click Next: Tags (optional), then Next: Review + create.
-________________________________________
 10. Review and create
   - Wait for validation to pass.
   - Click Create.
@@ -155,26 +146,26 @@ ________________________________________
   6.	Conditions: leave default or recommended → Next.
   7.	Review → Review + assign.
 #### INSTALL BELOW PLUGINS IN JENKINS
-	- Maven
-	- Pipeline stage viewer
-	- Blue ocean(optional) It gives better UI for jenkins
- - Sonarqube scanner
+- Maven
+- Pipeline stage viewer
+- Blue ocean(optional) It gives better UI for jenkins
+- Sonarqube scanner
 #### CONFIGURATIONS IN JENKINS
 - Configure Maven in Jenkins (Tool Installation Setup)
 - Go to Manage Jenkins → Global Tool Configuration.
 - Scroll to the Maven section.
-- Add Maven
-- Name: maven
-- Version: Select a stable version (e.g., Apache Maven 3.9.6)
-- Install automatically: Enabled
+	- Add Maven
+	- Name: maven
+	- Version: Select a stable version (e.g., Apache Maven 3.9.6)
+	- Install automatically: Enabled
 - Click Apply → Save
 
 - Configure SonarQube Scanner in Jenkins (Tool Installation Setup)
 - Go to Manage Jenkins → Global Tool Configuration again.
 - Scroll down to SonarQube Scanner installations.
-- Name: sonar-scanner #this is important we will use this pipeline
-- Version: SonarQube Scanner 7.3.0.5189
-- Install automatically: Enabled
+	- Name: sonar-scanner #this is important we will use this pipeline
+	- Version: SonarQube Scanner 7.3.0.5189
+	- Install automatically: Enabled
 - Click apply
 
 #### CREDENTIALS MANAGEMENT IN JENKINS
