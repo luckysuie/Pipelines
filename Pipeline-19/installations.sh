@@ -30,8 +30,8 @@ sudo systemctl restart docker
 newgrp docker
 
 # SonarQube (Docker)
-sudo docker pull sonarqube
-sudo docker run -d --name sonarqube -p 9000:9000 sonarqube
+docker pull sonarqube
+docker run -d --name sonarqube -p 9000:9000 sonarqube
 
 # Azure CLI
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
