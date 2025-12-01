@@ -1,14 +1,16 @@
 # Pipeline 19: Java Spring Boot Deployment Pipeline with Jenkins, Argo CD & AKS
------------
+## ARCHITECTURE DIAGRAM
+<img width="1823" height="745" alt="Screenshot 2025-11-30 200550" src="https://github.com/user-attachments/assets/0d65bad5-3114-4b23-9c98-104af05f05b4" />
+
 ### Phase 0: Pre-requisite:
 ------------
 - You should have a java springboot application github repo(With or without database) which contains below mandatory files
 1.	Dockerfile
 2.	pom.xml
 3.	K8s
-   - deployment.yaml
-   - service.yaml
-   - application.yaml
+	   - deployment.yaml
+	   - service.yaml
+	   - application.yaml
 - My repo contains Azure SQL Database: https://github.com/luckysuie/Java-springboot 
 ### Phase 1: Basic Infra and Installations
 1.	Create a ubuntu VM with 4vCpus and 16GiB memoy with all ports open
@@ -69,14 +71,15 @@ az acr create --resource-group lucky --name luckyregistry --sku Basic
 az aks create   --resource-group demo11   --name lucky-aks-cluster11   --node-count 1   --generate-ssh-keys
 ```
 7.	Create an Azure sql database
+- Steps
 1. Open SQL Database creation
     - Sign in to Azure Portal.
     - Search for SQL databases → click Create → SQL database.
 - You are now on the Basics tab.
 2. Apply free offer (if visible)
-  - At the top of the Basics tab, if you see
-- “Want to try Azure SQL Database for free?”
-- click Apply offer.
+	- At the top of the Basics tab, if you see
+	- “Want to try Azure SQL Database for free?”
+	- click Apply offer.
 - If you do not see it or do not want it, continue without changing anything here.
 3. Set backup storage redundancy to LRS(IF you don’t find this No Problem)
    - Still on the Basics tab, find Backup storage redundancy.
@@ -114,14 +117,14 @@ az aks create   --resource-group demo11   --name lucky-aks-cluster11   --node-co
 - Leave the rest as default.
 - Click Next: Tags (optional), then Next: Review + create.
 10. Review and create
-  - Wait for validation to pass.
-  - Click Create.
+	- Wait for validation to pass.
+	- Click Create.
 - Azure will deploy:
-- Resource group: lucky (already created)
-- SQL server: onesqlserver123 in Canada Central
-- Database: onepiecedb
-- Backup redundancy: LRS
-- Authentication: SQL auth with luckyadmin / YourSecurePassword@123
+	- Resource group: lucky (already created)
+	- SQL server: onesqlserver123 in Canada Central
+	- Database: onepiecedb
+	- Backup redundancy: LRS
+	- Authentication: SQL auth with luckyadmin / YourSecurePassword@123
 
 ### Phase 4: 
 #### APP REGISTRATION IN AZURE CLOUD	
