@@ -28,7 +28,6 @@ sudo groupadd -f docker
 sudo usermod -aG docker "$USER"
 sudo systemctl restart docker
 sudo systemctl restart jenkins
-newgrp docker
 
 # SonarQube (Docker)
 docker pull sonarqube
@@ -90,4 +89,3 @@ echo "  Grafana    -> http://<VM-IP>:3000"
 echo " Docker verify without sudo"
 docker --version
 docker ps
-
