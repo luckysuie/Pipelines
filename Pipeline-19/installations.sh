@@ -17,23 +17,23 @@ sudo apt update -y
 sudo apt install -y jenkins
 sudo systemctl enable --now jenkins
 
-# Docker
+#!/bin/bash
+
+# Docker install + enable docker without sudo + Jenkins user docker access
+sudo apt update -y
 wget -O docker.sh https://get.docker.com/
 sudo sh docker.sh
 
-# Create docker group (if already exists, no error)
 sudo groupadd -f docker
-
-# Add users to docker group
-sudo usermod -aG docker jenkins
 sudo usermod -aG docker "$USER"
+sudo usermod -aG docker jenkins
 
-# Enable and start Docker service
-sudo systemctl enable --now docker
-
-# Restart services to apply group changes
 sudo systemctl restart docker
 sudo systemctl restart jenkins
+
+docker --version
+docker ps
+
 
 # SonarQube (Docker)
 docker pull sonarqube
