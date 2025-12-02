@@ -260,18 +260,37 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
   - Username : admin
   - Password : which you copied from above command 
 
-### Phase 6: pipelines
-- we are going to write two pipelines
-1.	CI-Pipeline-->name it as jenkins.ci or anyother
-- Git checkout
-- Maven package
-- Sonarqube analysis
-- Publish sonar report
-- Login to Azure
-- Build and Push your image to ACR
-2.	CD-pipeline
-- Checks CI pipeline is succesfull or not
-- Gitops Deployment to aks using CD
+### Phase 6: pipeline and Argo CD deployment
+	- SetUp GitHub webhook for your Github repo and to your Jenkins server
+	- clone the repo in your local and open in Visual studio code
+	- Create a file Named Jenkinsfile and start writing the pipeline for the below stages
+- Stages
+	- Git checkout
+	- Maven package
+	- Sonarqube analysis
+	- Publish sonar report
+	- Login to Azure
+	- Build and Push your image to ACR
+- Once the above pipeline is succesfull navigate to your vm and do below one after another
+```bash
+git clone https://github.com/luckysuie/Java-springboot
+cd Java-springboot/
+kubectl apply -n argocd -f k8s/application.yaml
+```
+- Navigate to your Argo cd UI and check it will sync and the pods will be healthy
 
-### Phase 7: Monitoring using prometheus and Grafana
-	
+<img width="1897" height="944" alt="image" src="https://github.com/user-attachments/assets/4271d2a9-53c2-4948-ac1a-81e9737b2f29" />
+
+- Navigate to VM and perform below
+```bash
+kubectl get all
+```
+- Take the publicip of the app like this and browse you should see your application
+	- service/onepiece-app-service   LoadBalancer   10.0.78.79   4.229.128.169   80:32194/TCP   4h10m
+ <img width="1889" height="1030" alt="Screenshot 2025-12-02 230406" src="https://github.com/user-attachments/assets/70a8b7ca-074f-4ecf-b820-1c74331ba7ac" />
+
+- As my application contains database when i submit the application it store the details in the database like below
+
+<img width="1885" height="987" alt="image" src="https://github.com/user-attachments/assets/f99ef7f7-8733-4627-b8a2-e91c382f3f64" />
+
+### Phase 7: Monitoring using prometheus and Grafana 
