@@ -24,17 +24,31 @@
    - Install prometheus and grafana
 - On your Ubuntu VM:
 ```bash
-nano devops-stack-setup.sh
+nano jenkins-docker-setup.sh
 ```
-- Script Link: https://github.com/luckysuie/Pipelines/blob/main/Pipeline-19/installations.sh
+- Script Link: https://github.com/luckysuie/Pipelines/blob/main/Pipeline-19/jenkins-docker-setup.sh 
 - Paste the entire script, save (Ctrl+O, Enter, Ctrl+X).
   - Make it executable:
 ```bash
-chmod +x devops-stack-setup.sh
+chmod +x jenkins-docker-setup.sh
 ```
 - Run it:
 ```bash
-./devops-stack-setup.sh
+./jenkins-docker-setup.sh
+```
+2.a. Logout from the VM and re-login again and perform below 
+```bash
+nano devops-tools-setup.sh
+```
+- Script Link: https://github.com/luckysuie/Pipelines/blob/main/Pipeline-19/devops-tools-setup.sh 
+- Paste the entire script, save (Ctrl+O, Enter, Ctrl+X).
+  - Make it executable:
+```bash
+chmod +x devops-tools-setup.sh
+```
+- Run it:
+```bash
+./jenkins-docker-setup.sh
 ```
 3. Login to Jenkins
   - Open your VM’s public IP in the browser with port 8080 : http://<Public-IP>:8080
