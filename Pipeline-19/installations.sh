@@ -20,12 +20,18 @@ sudo systemctl enable --now jenkins
 # Docker
 wget -O docker.sh https://get.docker.com/
 sudo sh docker.sh
+
+# Create docker group (if already exists, no error)
+sudo groupadd -f docker
+
+# Add users to docker group
 sudo usermod -aG docker jenkins
 sudo usermod -aG docker "$USER"
+
+# Enable and start Docker service
 sudo systemctl enable --now docker
 
-sudo groupadd -f docker
-sudo usermod -aG docker "$USER"
+# Restart services to apply group changes
 sudo systemctl restart docker
 sudo systemctl restart jenkins
 
