@@ -262,9 +262,9 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
   - Password : which you copied from above command 
 
 ### Phase 6: pipeline and Argo CD deployment
-	- SetUp GitHub webhook for your Github repo and to your Jenkins server
-	- clone the repo in your local and open in Visual studio code
-	- Create a file Named Jenkinsfile and start writing the pipeline for the below stages
+- SetUp GitHub webhook for your Github repo and to your Jenkins server
+- clone the repo in your local and open in Visual studio code
+- Create a file Named Jenkinsfile and start writing the pipeline for the below stages
 - Stages
 	- Git checkout
 	- Maven package
