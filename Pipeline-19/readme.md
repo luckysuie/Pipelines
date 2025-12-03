@@ -1,6 +1,6 @@
 # Pipeline 19: Java Spring Boot Deployment Pipeline with Jenkins, Argo CD & AKS
 ## ARCHITECTURE DIAGRAM
-<img width="1823" height="745" alt="Screenshot 2025-11-30 200550" src="https://github.com/user-attachments/assets/0d65bad5-3114-4b23-9c98-104af05f05b4" />
+<img width="1798" height="701" alt="image" src="https://github.com/user-attachments/assets/160125a8-31b5-40d1-a175-a787c803eb68" />
 
 ### Phase 0: Pre-requisite:
 ------------
@@ -11,7 +11,8 @@
 	   - deployment.yaml
 	   - service.yaml
 	   - application.yaml
-- My repo contains Azure SQL Database: https://github.com/luckysuie/Java-springboot 
+- My repo contains Azure SQL Database: https://github.com/luckysuie/Java-springboot
+- Important : Do not touch database until you are more confident enough otherwise do it with plain application.
 ### Phase 1: Basic Infra and Installations
 1.	Create a resource group named lucky in canada central location and inside of it create a ubuntu VM with 4vCpus and 16GiB memoy with all ports open
 2.	Login to VM using SSH and do the below
