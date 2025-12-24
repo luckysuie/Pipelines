@@ -1,5 +1,42 @@
  # Pipeline-20: Build a CI/CD pipeline for a .NET web application using Azure DevOps with Stages with Blue -Green Deployment Strategy. Use Terraform configuration for creating App Services in Azure.
 
+
+
+### Phase 0: Uderstanding Stages/Environments and Slots
+ - There are TWO different concepts that people mix up:
+   - 🔹 Stages (Dev / Staging / Prod) → WHERE you deploy
+   - 🔹 Slots (Blue / Green) → HOW you deploy
+- If you remember this one line, confusion ends.
+
+```bash
++---------------------+      +-----------------------+      +------------------------+
+|   DEV Environment   |      |  STAGING Environment  |      |    PROD Environment    |
+|                     |      |                       |      |                        |
+|  App Service (Dev)  |      | App Service (Staging) |      |  App Service (Prod)    |
+|                     |      |                       |      |                        |
+|  • No slots         |      | • No slots (simple)   |      |  • Uses deployment     |
+|  • Fast iteration  |      | • Pre-prod testing    |      |    slots               |
+|                     |      |                       |      |                        |
++---------------------+      +-----------------------+      +------------------------+
+```
+- As per requirement if we want we can put slots in DEV and STAGING as well
+#### BLUE GREEN inside the App service
+```bash                    
+                    PROD App Service
+        +------------------------------------------------+
+        |                                                |
+        |  +------------------------------------------+  |
+Users ──▶|  | Production Slot (BLUE - Live Traffic)   |  |
+        |  +------------------------------------------+  |
+        |                    ▲                          |
+        |                    |  Slot Swap               |
+        |                    ▼                          |
+        |  +------------------------------------------+  |
+        |  | Staging Slot (GREEN - New Version)       |  |
+        |  +------------------------------------------+  |
+        |                                                |
+        +------------------------------------------------+
+```
 ### Phase 1 : Infra(Dotnet Web app by Terraform)
 - Create a three azure app services in three different resouces groups with environments like DEV staging and prod and prod must have slots for BLUE GREEN deployment strategy by Terraform (IAC)
  - Steps:
