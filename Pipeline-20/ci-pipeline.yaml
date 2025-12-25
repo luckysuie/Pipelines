@@ -1,0 +1,62 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dotnetVersion: '8.0.x'
+  buildConfiguration: 'Release'
+  publishDir: '$(Build.ArtifactStagingDirectory)/publish'
+  artifact_name: 'drop'
+  web_project_path: 'src/DotNetWebApp/DotNetWebApp.csproj'
+  solution: 'DotNetWebApp.sln'
+  test_project: 'tests/DotNetWebApp.Tests/DotNetWebApp.Tests.csproj'
+
+stages:
+- stage: BuildAndTest
+  displayName: 'Build and Test Stage'
+  jobs:
+  - job: Build
+    displayName: 'Build Job'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Install .NET SDK'
+      inputs:
+        packageType: 'sdk'
+        version: '$(dotnetVersion)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore'
+      inputs:
+        command: 'restore'
+        projects: '$(solution)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build Solution'
+      inputs:
+        command: 'build'
+        projects: '$(solution)'
+        arguments: '--configuration $(buildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Test'
+      inputs:
+        command: 'test'
+        projects: '$(test_project)'
+        arguments: '--configuration $(buildConfiguration) --verbosity normal'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish'
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '$(web_project_path)'
+        arguments: '--configuration $(buildConfiguration) --output $(publishDir)'
+        zipAfterPublish: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Build Artifacts'
+      inputs:
+        targetPath: '$(publishDir)'
+        artifactName: '$(artifact_name)'
