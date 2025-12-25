@@ -110,4 +110,4 @@ subscription ID: Xxxxxxxxxxxxxxxxxxxxxxxx
   - Directory(tenant)ID: your directory TenantID
   - credential-->service principal key
   - client secret : password
-  - service connection Name: luckyappconnec       #you can give any name that is upto you
+  - service connection Name: luckyspnconnec       #you can give any name that is upto you
