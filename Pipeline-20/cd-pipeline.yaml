@@ -1,0 +1,116 @@
+resources:
+  pipelines:
+  - pipeline: webappCI
+    source: dotnetwebappC33
+    trigger:
+      branches:
+        include:
+        - main
+
+variables:
+  project_name: 'dotnetwebapp'
+  rg_dev: 'rg-luckydotnet-dev'
+  rg_stage: 'rg-luckydotnet-staging'
+  rg_prod: 'rg-luckydotnet-prod'
+  app_dev: 'app-luckydotnet-dev-p01'
+  app_stage: 'app-luckydotnet-staging-p01'
+  app_prod: 'app-luckydotnet-prod-p01'
+  azure_service_connection: 'luckyspnconnec'
+  artifact_name: 'drop'
+
+stages:
+- stage: DeployDev
+  displayName: 'Deploy to Development'
+  jobs:
+  - deployment: DeployDev
+    displayName: 'Deploy to Dev'
+    environment: 'development'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Build Artifacts'
+            inputs:
+              buildType: 'specific'
+              project: '$(project_name)'
+              pipeline: 'dotnetwebappC33'
+              runVersion: 'latest'
+              artifact: '$(artifact_name)'
+              path: '$(Pipeline.Workspace)/$(artifact_name)'
+
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Azure Web App - Dev'
+            inputs:
+              azureSubscription: '$(azure_service_connection)'
+              appName: '$(app_dev)'
+              resourceGroupName: '$(rg_dev)'
+              package: '$(Pipeline.Workspace)/$(artifact_name)/publish/DotNetWebApp.zip'
+
+- stage: DeployStaging
+  displayName: 'Deploy to Staging'
+  jobs:
+  - deployment: DeployStaging
+    displayName: 'Deploy to Staging'
+    environment: 'staging'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Build Artifacts'
+            inputs:
+              buildType: 'specific'
+              project: '$(project_name)'
+              pipeline: 'dotnetwebappC33'
+              runVersion: 'latest'
+              artifact: '$(artifact_name)'
+              path: '$(Pipeline.Workspace)/$(artifact_name)'
+
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Azure Web App - Staging'
+            inputs:
+              azureSubscription: '$(azure_service_connection)'
+              appName: '$(app_stage)'
+              resourceGroupName: '$(rg_stage)'
+              package: '$(Pipeline.Workspace)/$(artifact_name)/publish/DotNetWebApp.zip'
+- stage: DeployProduction
+  displayName: 'Deploy to Production'
+  jobs:
+  - deployment: DeployProduction
+    displayName: 'Deploy to Production'
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Build Artifacts'
+            inputs:
+              buildType: 'specific'
+              project: '$(project_name)'
+              pipeline: 'dotnetwebappC33'
+              runVersion: 'latest'
+              artifact: '$(artifact_name)'
+              path: '$(Pipeline.Workspace)/$(artifact_name)'
+          
+          - task: AzureWebApp@1
+            displayName: 'Deploy to GREEN slot (staging)'
+            inputs:
+              azureSubscription: '$(azure_service_connection)'
+              appType: 'webApp'
+              appName: '$(app_prod)'
+              deployToSlotOrASE: true
+              resourceGroupName: '$(rg_prod)'
+              slotName: 'staging'
+              package: '$(Pipeline.Workspace)/$(artifact_name)/publish/DotNetWebApp.zip'
+
+          - task: AzureAppserviceManage@0
+            displayName: 'Swap slots - production'
+            inputs:
+              azureSubscription: '$(azure_service_connection)'
+              Action: 'Swap Slots'
+              WebAppName: '$(app_prod)'
+              ResourceGroupName: '$(rg_prod)'
+              SourceSlot: 'staging'
+              SwapWithProduction: true
