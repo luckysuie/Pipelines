@@ -111,3 +111,39 @@ subscription ID: Xxxxxxxxxxxxxxxxxxxxxxxx
   - credential-->service principal key
   - client secret : password
   - service connection Name: luckyspnconnec       #you can give any name that is upto you
+
+ ## Pipeline
+ ### CI- Pipeline
+  - Navigate to Pipelines and create a new pipeline and select starter pipeliele then writing below stage and tasks:
+     - Build&Test
+         - Install Dotnet
+         - Restore Packages
+         - Build Solution
+         - Test
+         - Publish
+         - publishBuildArtifact
+    
+ ### CD- Pipeline
+  - Navigate to Pipelines and create a new pipeline and select starter pipeliele then writing below stage and tasks:
+     - DeployDev
+        - Download pipeline artifact
+        - Deploy to Azure Web App - Dev
+     - Deploystaging
+        - Download pipeline artifact
+        - Deploy to Azure Web App - Staging
+     - Deployproduction
+        - Download pipeline artifact
+        - Deploy to GREEN slot (staging)
+        - Swapslots (Means to Blue i.e,. Live)
+
+ #### CI-pipeline
+<img width="1897" height="907" alt="Screenshot 2025-12-25 235300" src="https://github.com/user-attachments/assets/4e201aff-b42f-4a79-8364-75f443ae9fec" />
+
+ #### CD-pipeline
+ 
+<img width="1895" height="853" alt="Screenshot 2025-12-25 235234" src="https://github.com/user-attachments/assets/67508f21-be8b-468d-97f2-7c47caf455b5" />
+
+#### Website
+
+<img width="1884" height="951" alt="Screenshot 2025-12-25 235053" src="https://github.com/user-attachments/assets/66c755b5-995c-47fe-8b4c-ea60a550e4fd" />
+
