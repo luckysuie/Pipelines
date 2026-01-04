@@ -3,4 +3,19 @@
     1. Infra Pipleine for AKS and ACR by Terraform
     2. Application Pipeline
 ### Infra Pipeline
-- 
+- write Terrraform code for the creation of aks and ACR using terraform and store it in GitHub
+- write backend storage account bash file as well and store it in Github
+- GitHub Repo: https://github.com/luckysuie/aks-acr (U can use this repo as well)
+
+### Pipeline: 
+ - Navigate to your Azure DevOps portal and create a project with your convinent name
+ - Navigate to repos and import your GitHub Repo https://github.com/luckysuie/aks-acr
+ - Navigate to Pipelines and start writing Yaml Pipeline for your Infra creation
+### Statges
+- Storage Account creation
+- Terrafom
+      - Terraform Installation
+      - Terraform Init
+      - Terraforn validate
+      - Terraform apply
+### Pipeline Link: 
