@@ -18,4 +18,7 @@
       - Terraform Init
       - Terraforn validate
       - Terraform apply
-### Pipeline Link: 
+### Pipeline Link: https://github.com/luckysuie/Pipelines/blob/main/Pipelines-21/infrapipeline.yaml
+## SUccesfull Infra Creation
+<img width="1539" height="786" alt="image" src="https://github.com/user-attachments/assets/b8ae865a-6741-43bd-87f2-d5debcc45283" />
+
