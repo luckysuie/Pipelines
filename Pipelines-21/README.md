@@ -1,4 +1,8 @@
 ## Pipeline-21: Deploy Java app to AKS using Azure DevOps, Maven, SonarQube, Docker, ACR , Trivy , helm charts and enable HPA auto scaling implementing Blue-Green Deployment and Infrastructure also be created by Azure DevOps Pipeline. 
+
+### ARCHITECTURE DIAGRAM
+<img width="1360" height="786" alt="image" src="https://github.com/user-attachments/assets/8537ae76-b47a-4594-a043-dcc8e00936b8" />
+
 - Here we are implementing two pipelines
     1. Infra Pipleine for AKS and ACR by Terraform
     2. Application Pipeline
