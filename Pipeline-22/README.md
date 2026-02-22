@@ -1,4 +1,3 @@
-
 ## DOTNET eShopOnWeb Deployment to Azure App Service using Azure DevOps pipeline and Azure SQL
 Steps:
 1. Fork the Repository
@@ -60,36 +59,41 @@ Connection String Example: Server=tcp:eshop-sql-server-1234.database.windows.net
 This should be your REAL PASSWORD
 ________________________________________
 7. Configure URL in App Service
-•	Go to App Service → Settings → Environment VariablesApp settings
-Click add
-Name: baseUrls__webBase
-Value: https://dotwebapp123456-bkgkdvhgdwg4e0b0.canadacentral-01.azurewebsites.net/ 
-Value here should be your app service URL not above
+- Go to App Service → Settings → Environment Variables-->App settings
+	- Click add
+	- Name: baseUrls__webBase
+	- Value: https://dotwebapp123456-bkgkdvhgdwg4e0b0.canadacentral-01.azurewebsites.net/ 
+- Value here should be your app service URL not above
 
-Navigate to your Azure DevOps and the project Repos
-Web Appsettings.json on the top rigt edit 
-Change base
+- Navigate to your Azure DevOps and the project-->Repos
+- src/web/Appsettings.json on the top rigt edit 
+- Change
+  ```bash
     "apiBase": "https://localhost:5099/api/",
     "webBase": https://localhost:44315/
+  ```
  to
+ ```
  "apiBase": "https://dotwebapp123456-bkgkdvhgdwg4e0b0.canadacentral-01.azurewebsites.net/api/",
-    "webBase": https://dotwebapp123456-bkgkdvhgdwg4e0b0.canadacentral-01.azurewebsites.net/
-
-Change connection strings section to 
+ "webBase": https://dotwebapp123456-bkgkdvhgdwg4e0b0.canadacentral-01.azurewebsites.net/
+```
+- Change connection strings section 
+```bash
 "CatalogConnection": "Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Microsoft.eShopOnWeb.CatalogDb;",
-    "IdentityConnection": "Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Microsoft.eShopOnWeb.Identity;"
+"IdentityConnection": "Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Microsoft.eShopOnWeb.Identity;"
+```
+to
+```bash 
+"CatalogConnection": "Server=tcp:eshop-sql-server-1234.database.windows.net,1433;Initial Catalog=eshop-db;Persist Security Info=False;User ID=sqladmin;Password=YOUR_NEW_PASSWORD;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+"IdentityConnection": "Server=tcp:eshop-sql-server-1234.database.windows.net,1433;Initial Catalog=eshop-db;Persist Security Info=False;User ID=sqladmin;Password=YOUR_NEW_PASSWORD;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+```
 
- "ConnectionStrings": {
-    "CatalogConnection": "Server=tcp:eshop-sql-server-1234.database.windows.net,1433;Initial Catalog=eshop-db;Persist Security Info=False;User ID=sqladmin;Password=YOUR_NEW_PASSWORD;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
-    "IdentityConnection": "Server=tcp:eshop-sql-server-1234.database.windows.net,1433;Initial Catalog=eshop-db;Persist Security Info=False;User ID=sqladmin;Password=YOUR_NEW_PASSWORD;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-  },
-
-Finally Commit
-Here I have placed my dotnet webapp url but you should use yours. Mostly connections are same if you use the same creds which I mentioned above if it changs you need to change
+- Finally Commit. Here I have placed my dotnet webapp url but you should use yours. Mostly connections are same if you use the same creds which I mentioned above if it changs you need to change
 
 
 
-Same in the program . cs chage the below section to 
+- Same in the program . cs chage the below section to 
+```bash
 else{
     // Configure SQL Server (prod)
     var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
@@ -105,11 +109,11 @@ else{
         options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
     });
 }
-
+```
 
 To 
 
-
+```bash
 {
     // NO Key Vault - read directly from ConnectionStrings
     builder.Services.AddDbContext<CatalogContext>(c =>
@@ -124,22 +128,31 @@ To
         options.UseSqlServer(cs, sqlaOptions => sqlOptions.EnableRetryOnFailure());
     });
 }
+```
+- Finally commit
+- Now navigate to Pipelines new pipeline select your repo starter pipeline and then start writing stages for below
+- Build
+	- Install dotnet 8 sdk
+	- Dotnet restore
+	- Dotnet build
+	- Dotnet test
+	- Publish the build file
+	- Zip the published output
+	- Store the zip in drop as artifact
+- DEPLOY TO DEV
+	- Download current artifact
+	- Deploy to Azure app service
+- DEPLOY TO PROD
+	- Download current artifact
+	- Deploy to Azure app service
 
-Finally commit
+### Testings:
+----
+- Browse the Azure app service URL you will get the web page like Below
+<img width="1880" height="944" alt="image" src="https://github.com/user-attachments/assets/0ddf3566-4bbc-4823-b509-91f223f64f66" />
 
-Now navigate to Pipelines new pipeline select your repo starter pipeline and then start writing stages for below
-Build
-	Install dotnet 8 sdk
-	Dotnet restore
-	Dotnet build
-	Dotnet test
-	Publish the build file
-	Zip the published output
-	Store the zip in drop as artifact
-DEPLOY TO DEV
-	Download current artifact
-	Deploy to Azure app service
-DEPLOY TO PROD
-	Download current artifact
-	Deploy to Azure app service
-
+- On the Top right of website click login and provide the creds which are default given at the bottom the website page
+- select any item and Add to basket then checkout then pay now. so your order will be placed.
+## Database test:
+- navigate to your Database in the Azure portal--> search for Query editor and login with creds in the query type this ```bash select *FROM [dbo].[Orders] ```
+<img width="1796" height="768" alt="image" src="https://github.com/user-attachments/assets/c96f4f9d-66f7-4848-855d-46ff035a6ec0" />
