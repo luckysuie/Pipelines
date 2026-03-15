@@ -139,6 +139,7 @@ subscription ID: Xxxxxxxxxxxxxxxxxxxxxxxx
  #### CI-pipeline
 <img width="1897" height="907" alt="Screenshot 2025-12-25 235300" src="https://github.com/user-attachments/assets/4e201aff-b42f-4a79-8364-75f443ae9fec" />
 
+
  #### CD-pipeline
  
 <img width="1895" height="853" alt="Screenshot 2025-12-25 235234" src="https://github.com/user-attachments/assets/67508f21-be8b-468d-97f2-7c47caf455b5" />
