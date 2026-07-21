@@ -65,5 +65,22 @@ Start-Process -FilePath $Path -ArgumentList "/Install", "/Passive", "/NoRestart"
 Remove-Item -Path $Path
 Write-Host "SSMS Installation Complete! Please restart your VM to finalize." -ForegroundColor Green
 ```
-
-
+### Restricting Azure Web App and Azure SQL Database Using Private Endpoint and NSG
+1. Objective
+- The goal is to configure the environment so that:
+    - The Azure Web App is accessible only from the VM in websubnet.
+    - The Azure SQL Database is accessible only from the VM in dbsubnet.
+    - Public access to both services remains disabled.
+- Part 1: Restrict Azure Web App Access
+    - Verify the Web App Private Endpoint
+        - Open Azure Portal → Private Endpoints → Select the Web App private endpoint (inbound-pe).
+        - Open the associated Network Interface (NIC) and note the assigned Private IP Address.
+        - Use this Private IP (e.g., 10.0.3.5) as the destination in the NSG rules.
+    - Enable Network Policies on the Private Endpoint Subnet
+        - Open banking-vnet → Subnets → Select end-point-subnet.
+        - Under Network policy for private endpoints, enable Network Security Groups.
+        - Save the configuration to allow the NSG to control traffic to private endpoints.
+    - Associate an NSG with the Endpoint Subnet
+        - Open the NSG associated with end-point-subnet. If no NSG is associated, create one and associate it with banking-vnet/end-point-subnet.
+        - Verify that the NSG is linked to banking-vnet/end-point-subnet.
+        - The same NSG can be used to manage traffic for both the Web App and Azure SQL private endpoints.
