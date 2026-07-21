@@ -1,0 +1,70 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  name: Banking-Agent-Pool
+  demands:
+    - Agent.Name -equals banking-linux-agent
+
+variables:
+  frontendPath: digital-banking-web
+  backendPath: digital-banking-platform
+  serviceConnection: banking-service-connec
+  webAppName: banking-webapp
+
+steps:
+- checkout: self
+  clean: true
+
+- task: NodeTool@0
+  displayName: Use Node.js 20
+  inputs:
+    versionSpec: 20.x
+
+- script: |
+    mvn -B clean
+  workingDirectory: '$(backendPath)'
+  displayName: Clean backend
+
+- script: |
+    npm ci
+    npm run build
+    test -f dist/index.html
+  workingDirectory: '$(frontendPath)'
+  displayName: Build frontend
+
+- script: |
+    mkdir -p "$(backendPath)/src/main/resources/static"
+    cp -r "$(frontendPath)/dist/." \
+          "$(backendPath)/src/main/resources/static/"
+  displayName: Copy frontend
+
+- script: |
+    mvn -B package -DskipTests
+  workingDirectory: '$(backendPath)'
+  displayName: Build JAR
+
+- script: |
+    JAR_FILE=$(find "$(backendPath)/target" \
+      -maxdepth 1 \
+      -type f \
+      -name "*.jar" \
+      ! -name "*.jar.original" \
+      -print -quit)
+
+    test -n "$JAR_FILE"
+    jar tf "$JAR_FILE" | grep -q \
+      "BOOT-INF/classes/static/index.html"
+
+    cp "$JAR_FILE" "$(Build.ArtifactStagingDirectory)/banking-app.jar"
+  displayName: Verify JAR
+
+- task: AzureWebApp@1
+  displayName: Deploy application
+  inputs:
+    azureSubscription: '$(serviceConnection)'
+    appType: webAppLinux
+    appName: '$(webAppName)'
+    package: '$(Build.ArtifactStagingDirectory)/banking-app.jar'
