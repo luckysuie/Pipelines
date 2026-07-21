@@ -66,7 +66,7 @@ Write-Host "SSMS installed successfully." -ForegroundColor Green
         ```bash https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest&pivots=msi ```
     - scroll down and select MS Installer(MSI) and scroll down a bit more and click on latest MSI of the Azure CLI(64-bit). It will be downloaded. open it and run it
     - Open command prompt and check version with command az version
-    - Login to your Azure account wth command az login --use-device-code
+    - Login to your Azure account with command az login --use-device-code
 
 - Install Git bash only on webvm using below
     - open google chrome of what you have installed and open the below url ```bash https://git-scm.com/install/windows ```
@@ -266,6 +266,158 @@ az ad sp create-for-rbac --name banking-devops-sp --role Contributor --scopes /s
   "tenant": "yourtenatindhere"
 }
 ```
+- connect to your ubuntu VM which you created at starting and install the below things
+    - Install java 21
+```bash
+    sudo apt update
+    sudo apt install openjdk-21-jdk -y
+    java -version
+```
+ - Install Git
+```bash
+sudo apt update
+sudo apt install git -y
+git --version
+```
+ - Install Azure cli
+```bash
+sudo apt update
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+az --version
+```
+ - Login into your account
+```bash
+az login --use-device-code
+```
+ - Install maven
+```bash
+sudo apt update
+sudo apt install maven -y
+mvn -v
+```
+ - Install Node js 20 (run one after another this one)
+```bash
+sudo apt update
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
+source ~/.bashrc
+nvm install 20
+node -v
+npm -v
+```
+
+- service connection setup
+    - Navigate to your Azure devops portal
+    - Create a new project on the top right named webapp project or any other
+    - Naviagte to project settings>servce connections 
+    - New service connection: Azure resource manager
+        - Identity type: app registration or managed identity(manual)
+        - Credential: secret
+        - Environment : Azure cloud
+        - Scope level: subscription
+        - Subscription ID: give your subsctiption id
+        - Subscription name: give your subscrition name
+        - Application (client) ID: Give the appid which you generated earlier
+        - Directory (tenant) ID: give the tenant id which you generated earlier
+        - Client secret: give the password which you generated earlier
+        - Service connection name: banking-service-connec  ## you can use any other but note it for pipeliens
+        - Security: Grant access permission to all pipelines(Check it)
+    - Finally verify and save.
+
+### Configure Azure DevOps Self-Hosted Agent (Ubuntu VM)
+1. Create an Agent Pool at the Organization Level
+    - Sign in to Azure DevOps. 
+    - Navigate to Organization Settings. 
+    - Select Agent Pools. 
+        - Click Add Pool. 
+        - Configure the pool: 
+        - Pool Type: Self-hosted 
+        - Pool Name: Banking-Agent-Pool 
+        - Enable Auto-provision this agent pool in all projects 
+    - Click Create. 
+
+2. Download the Linux Agent
+    - Open the newly created Banking-Agent-Pool. 
+    - Click New Agent. 
+    - Select: 
+    - Operating System: Linux 
+    - Architecture: x64 
+    - Copy the wget download command displayed in Azure DevOps. 
+
+3. Connect to the Ubuntu VM
+    - Connect to the Ubuntu VM using SSH (Terminal or PuTTY).
+    - Update the package repository:
+```bash
+sudo apt update
+```
+ - Create a folder for the Azure DevOps agent:
+```bash
+mkdir ~/agent
+cd ~/agent
+```
+________________________________________
+4. Download and Extract the Agent
+    - Paste the wget command copied from Azure DevOps. Example: wget https://download.agent.dev.azure.com/agent/4.xxx.x/vsts-agent-linux-x64-4.xxx.x.tar.gz
+    - Extract the downloaded package:
+```bash
+tar -xvzf vsts-agent-linux-x64-4.xxx.x.tar.gz
+```
+ - Verify the extracted files:
+```bash
+ls
+```
+________________________________________
+5. Configure the Azure DevOps Agent
+    - Run the configuration script:
+```bash
+./config.sh
+```
+ - Provide the following details when prompted:
+    | Prompt | Value / Configuration |
+    | :--- | :--- |
+    | **Accept Team Explorer Everywhere License** | Press <kbd>Enter</kbd> *(Default: N)* |
+    | **Server URL** | `https://dev.azure.com/<your-organization-name>` |
+    | **Authentication Type** | Press <kbd>Enter</kbd> *(PAT)* |
+    | **Personal Access Token** | *Paste your Azure DevOps PAT* *(Full Access recommended)* |
+    | **Agent Pool** | `Banking-Agent-Pool` |
+    | **Agent Name** | `banking-linux-agent` *(or any preferred name)* |
+    | **Work Folder** | Press <kbd>Enter</kbd> *(Default: `_work`)* |
+- After the configuration completes successfully, verify the files using ls command
+
+
+6. Verify the Agent
+ - Start the agent manually:
+```bash
+./run.sh
+```
+ - Navigate to: Azure DevOps → Organization Settings → Agent Pools → Banking-Agent-Pool
+ - Verify that the agent status is Online.
+
+- Run the Agent as a Service (Recommended)
+- Press Ctrl + C to stop the manually running agent.
+- Install the agent as a Linux service:
+```bash
+sudo ./svc.sh install
+```
+- Start the service:
+```bash
+sudo ./svc.sh start
+```
+- Verify the service status:
+```bash
+sudo ./svc.sh status
+```
+- A successful status indicates that the Azure DevOps agent is running as a background service and will automatically start whenever the Ubuntu VM is restarted.
+
+- Final Verification
+    - Navigate to:Azure DevOps → Organization Settings → Agent Pools → Banking-Agent-Pool
+    - Confirm that:
+        - Agent Name: banking-linux-agent 
+        - Status: Online 
+- Your Ubuntu VM is now ready to execute Azure DevOps build and deployment pipelines.
+
+
+
+
 
 
 
