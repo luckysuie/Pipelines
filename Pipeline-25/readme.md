@@ -1,3 +1,36 @@
+## Secure Digital Banking two tier Application Deployment on Azure Using Private Networking and Azure DevOps CI/CD
+
+### Technology Stack
+
+| Technology | Usage in the Project |
+|------------|----------------------|
+| Microsoft Azure | Cloud platform used to host the complete banking application and infrastructure. |
+| Azure App Service | Hosts the Java Spring Boot banking application. |
+| Azure Virtual Network (VNet) | Provides secure private networking between Azure resources. |
+| Azure Private Endpoint | Enables private access to Azure App Service, Azure SQL Database, and Azure Key Vault. |
+| Azure Private DNS Zone | Resolves Azure service names to their private endpoint IP addresses. |
+| Azure SQL Database | Stores banking application data such as customers, accounts, payments, and transactions. |
+| Azure Key Vault | Securely stores database credentials and application secrets. |
+| Microsoft Entra ID & RBAC | Provides identity management and role-based access control for Azure resources. |
+| Java 21 | Backend programming language used to develop the banking application. |
+| Spring Boot | Framework used to build REST APIs and integrate Azure services. |
+| Maven | Builds, packages, and manages Java project dependencies. |
+| Node.js & npm | Builds the frontend application before deployment. |
+| Git & GitHub | Version control and source code repository management. |
+| Azure DevOps | Implements CI/CD pipelines, service connections, and deployment automation. |
+| Self-Hosted Azure DevOps Agent | Executes build and deployment pipelines securely from within the Azure Virtual Network. |
+
+### Architecture Diagram
+
+### Defnitions
+- Network Security Group (NSG): An Azure Network Security Group (NSG) filters network traffic by allowing or denying inbound and outbound connections to Azure resources using security rules.
+- NSG Inbound Rule: An NSG inbound rule controls incoming network traffic to an Azure resource by allowing or denying connections based on source, destination, port, and protocol.
+- NSG Outbound Rule: An NSG outbound rule controls outgoing network traffic from an Azure resource by allowing or denying connections based on destination, port, and protocol.
+- A Private Endpoint is a private IP address created inside your VNet that gives secure access to an Azure PaaS service (App Service, SQL Database, Key Vault, Storage, etc.) without exposing that service to the public internet.
+- A Private DNS Zone stores the mapping between an Azure service's name and its Private Endpoint IP address, so applications can find the service over the private network.
+- Private End point: Private Endpoint gives the service a private IP
+- Private DNS Zone: Private DNS Zone remembers which service name belongs to that private IP
+
 ### Steps
 0. Fork this repo to your Github Repo: https://github.com/luckysuie/banking 
 1. Create a resource group ex: banking-rg
@@ -354,7 +387,6 @@ sudo apt update
 mkdir ~/agent
 cd ~/agent
 ```
-________________________________________
 4. Download and Extract the Agent
     - Paste the wget command copied from Azure DevOps. Example: wget https://download.agent.dev.azure.com/agent/4.xxx.x/vsts-agent-linux-x64-4.xxx.x.tar.gz
     - Extract the downloaded package:
@@ -365,7 +397,7 @@ tar -xvzf vsts-agent-linux-x64-4.xxx.x.tar.gz
 ```bash
 ls
 ```
-________________________________________
+
 5. Configure the Azure DevOps Agent
     - Run the configuration script:
 ```bash
@@ -415,6 +447,47 @@ sudo ./svc.sh status
         - Status: Online 
 - Your Ubuntu VM is now ready to execute Azure DevOps build and deployment pipelines.
 
+
+### Azure DevOps CI/CD Pipeline Steps
+- Now navigate to your webapp project on the left side click on pipelines the selct github. Then slect your forked repo then click on starter pipeline. now start writing the pipleine with below hints
+    - Checkout Code: Checks out repository code and performs a clean workspace setup.
+    - Use Node.js 20: Installs Node.js version 20.x environment.
+    - Clean backend: Runs mvn clean on the backend project.
+    - Build frontend: Installs npm packages, builds the frontend, and verifies index.html.
+    - Copy frontend: Copies compiled frontend assets into the backend static resources folder.
+    - Build JAR: Packages the combined Spring Boot application into a executable JAR.
+    - Verify JAR: Verifies the embedded assets inside the JAR file and stages the artifact.
+    - Deploy application: Deploys the packaged .jar file to the Linux Azure Web App.
+- pipeline should be succesfull
+
+- Navigate to the dbvm and open ssms 22 whch we already installed and connect to the server
+    - servername: banking-sql-server8576.database.windows.net 
+    - authentication: sql authentication
+    - userame: bankingadmin
+    - password: LuckyPassword@1234
+
+- After connecting succesfully. click on the new query and execute one by one below
+```bash
+SELECT name FROM sys.tables ORDER BY name;
+SELECT * FROM customers;
+SELECT * FROM accounts;
+SELECT * FROM beneficiaries;
+SELECT * FROM payments;
+SELECT * FROM transactions;
+SELECT * FROM notifications;
+SELECT * FROM audit_events;
+SELECT * FROM flyway_schema_history;
+```
+
+
+### Outputs and validations
+- Pipeline succesfull
+- Able to open webapp URL in the webvm
+- Able to query the sql in the dbvm
+- Not able to open the webapp URL from dbvm
+- Not able to open the webapp URL from your local computer
+- Not able to query the sql in the webvm
+- Default Monitoring available in the webapp
 
 
 
