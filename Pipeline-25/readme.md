@@ -22,6 +22,9 @@
 
 ### Architecture Diagram
 
+![Architecture](images/architecture.png.png)
+
+
 ### Defnitions
 - Network Security Group (NSG): An Azure Network Security Group (NSG) filters network traffic by allowing or denying inbound and outbound connections to Azure resources using security rules.
 - NSG Inbound Rule: An NSG inbound rule controls incoming network traffic to an Azure resource by allowing or denying connections based on source, destination, port, and protocol.
@@ -482,14 +485,27 @@ SELECT * FROM flyway_schema_history;
 
 ### Outputs and validations
 - Pipeline succesfull
+  ![pipeline](images/pipeline.png.png)
+  
 - Able to open webapp URL in the webvm
+  ![cloudbank](images/cloudbank.png.png)
+  
 - Able to query the sql in the dbvm
+  ![database](images/database.png.png)
+  
 - Not able to open the webapp URL from dbvm
+  ![dbweb](images/dbweb.png.png)
+  
 - Not able to open the webapp URL from your local computer
+  ![Local](images/local.png.png)
+  
 - Not able to query the sql in the webvm
+  ![webdb](images/webdb.png.png)
+  
 - Default Monitoring available in the webapp
+  ![Architecture](images/monitoring.png.png)
 
-
+### THE END
 
 
 
