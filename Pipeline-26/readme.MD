@@ -42,7 +42,7 @@ az login --use-device-code
 
 ### create a service principal and store the credentials in the jenkins as a secret for the jenkins to access the azure resources
 ```bash
-az ad sp create-for-rbac --name "jenkins-sp" --role contributor --scopes /subscriptions/946461f2-5424-4818-bd06-010e5f3cd8c1 --sdk-auth
+az ad sp create-for-rbac --name "jenkins-sp" --role contributor --scopes /subscriptions/your-subscription-id --sdk-auth
 ```
 - Note : Esure to copy the output of the above command and store it in a safe place as it contains the credentials for the service principal.
 
