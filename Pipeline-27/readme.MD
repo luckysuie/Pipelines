@@ -1,10 +1,13 @@
-# Deploying a Java spring boot microservice application to AKS via GitHub actions
+# Secure E-Commerce Java springboot Microservices on Azure AKS with GitHub Actions
+  - Automated Container Deployment, Workload Identity, Key Vault and Azure SQL Integration
+
+## Architecture Diagram
+![architecture](images/architecture.png)
 
 ### Monolithic vs Microservices
 ---
 #### 1. Monolithic Application
 - Definition: A Monolithic Application is a single application that contains all business functionalities in one codebase, one build, and one deployment unit.
-
 - Example
 E-commerce Application
 
@@ -15,7 +18,6 @@ E-commerce Application
 ├── Payments
 └── Notifications
 ```
-
 ### Java Spring Boot Repository Structure
 
 ```text
@@ -32,19 +34,15 @@ ecommerce-monolithic/
 ```
 
 ### Build and Deployment
-
 ```text
 Source Code ---> mvn clean package --> ecommerce.jar --> Single Deployment
 ```
-
 ---
 
 ### 2. Microservices Application
 - Definition: A Microservices Application is an architecture where the application is divided into multiple small, independent services that communicate with each other through APIs.
-
 ### Example
 - E-commerce System
-
 ```text
 User Service
 Product Service
@@ -54,9 +52,7 @@ Notification Service
 ```
 
 - Each service is an independent Spring Boot application.
-
 ### Build Outputs
-
 ```text
 user-service.jar
 product-service.jar
@@ -66,7 +62,6 @@ notification-service.jar
 ```
 
 ### Java Spring Boot Repository Structure (Monorepo Approach)
-
 ```text
 ecommerce-microservices/
 ├── user-service/
@@ -103,20 +98,14 @@ ecommerce-microservices/
 ```
 
 ### Build and Deployment
-
 ```text
 user-service --> user-service.jar --> Deploy Independently
-
 product-service --> product-service.jar --> Deploy Independently
 ```
-
 ---
-
 #### What is an API?
 - An API is a way for one application or service to talk to another application or service.
-
 ### Simple meaning
-
 ```text
 Service A needs data
      ↓
@@ -124,17 +113,13 @@ Calls API
      ↓
 Service B gives response
 ```
-
 ### Example
-
 - Suppose we have:
-
 ```text
 User Service
 Product Service
 Order Service
 ```
-
 - Customer places an order.
 - order-service needs user details and product details.
 - So it calls APIs:
@@ -183,22 +168,18 @@ user-service
 product-service
 order-service
 ```
-
 - So order-service can call:
 ```text
 http://user-service/users/101
 ```
-
-and:
+- and:
 
 ```text
 http://product-service/products/500
 ```
-
 ---
 
 #### Microservices communication in AKS
-
 ```text
 Customer
   ↓
@@ -214,13 +195,11 @@ order-service pod
 ```
 
 #### Simple understanding
-
 - In AKS, microservices communicate through APIs using Kubernetes service names instead of IP addresses.
 
 ### steps
 1. Fork the repo to your Github account. url: https://github.com/luckysuie/eshop-microservices 
 2. Open the forked repo in your local machine using visual studio code
-
 
 ### Provision Infrastructure using Azure CLI or portal
 1. create a resouce group in the central india region or any other region of your choice.
