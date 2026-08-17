@@ -1,7 +1,7 @@
 # Secure E-Commerce Java springboot Microservices on Azure AKS with GitHub Actions
   - Automated Container Deployment, Workload Identity, Key Vault and Azure SQL Integration
 
-## Architecture Diagram
+## Architecture Diagramm
 ![architecture](images/architecture.png)
 
 ### Monolithic vs Microservices
