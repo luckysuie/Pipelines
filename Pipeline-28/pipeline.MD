@@ -3,7 +3,7 @@
 
 
 #### Architecture Diagram
-![Architecture Diagram](images/architecture-diagram.jpeg)
+![Architecture Diagram](Pipeline-28/images/architecture-diagram.jpeg)
 - Project Setup Steps
     1.	Create a New Project in Azure DevOps
         - Navigate to the Azure DevOps portal.
@@ -110,7 +110,7 @@ az ad sp create-for-rbac --name "pirate-devops-sp" --role contributor --scopes /
     - Choose "YAML" as the pipeline configuration method.
     - start writng the pipeline with below stages
     - Yaml file is already shared in the repo
-    
+
 
 
 
