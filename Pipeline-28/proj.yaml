@@ -1,0 +1,41 @@
+trigger:
+  branches:
+    include:
+      - master
+
+variables:
+  RESOURCE_GROUP: 'pirate-rg'
+  AZURE_WEBAPP_NAME: 'pirate-webapp'
+  SERVICE_CONNECTION: 'lucky-pirate-connec'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: JavaToolInstaller@0
+    displayName: 'Install Java 21'
+    inputs:
+      versionSpec: '21'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+
+  - task: Maven@3
+    displayName: 'Build and package the application'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'clean package -DskipTests'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish build artifacts'
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/target'
+      ArtifactName: 'drop'
+
+  - task: AzureWebApp@1
+    displayName: 'Deploy to Azure Web App'
+    inputs:
+      azureSubscription: '$(SERVICE_CONNECTION)'
+      appType: 'webApp'
+      appName: '$(AZURE_WEBAPP_NAME)'
+      package: '$(System.DefaultWorkingDirectory)/target/*.jar'
+      startupCommand: 'java -jar $(System.DefaultWorkingDirectory)/target/*.jar'
